@@ -3,7 +3,7 @@ let selectedPath = {};
 let multiSelections = {};
 
 async function loadGuide() {
-  const response = await fetch('data/research-guide.json');
+  const response = await fetch('data/research-guide.json?v=20260420a');
   guideData = await response.json();
   selectedPath = { 0: guideData.startNode };
   multiSelections = {};
