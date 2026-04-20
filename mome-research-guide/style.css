@@ -1,22 +1,19 @@
 :root {
   --bg: #f3f3f0;
   --surface: #ffffff;
+  --surface-muted: #fafaf7;
   --text: #111111;
   --muted: #6b6b6b;
   --line: #d8d8d2;
+  --line-strong: #b7b7ae;
   --accent: #C2D74C;
   --accent-soft: #edf3cf;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
   --radius: 18px;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -34,10 +31,7 @@ body::before {
   pointer-events: none;
 }
 
-.site-shell {
-  position: relative;
-  min-height: 100vh;
-}
+.site-shell { position: relative; min-height: 100vh; }
 
 .topbar {
   background: #111;
@@ -61,20 +55,15 @@ body::before {
 
 .layout {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
-  gap: 28px;
-  max-width: 1160px;
+  grid-template-columns: 240px minmax(0, 1fr) 360px;
+  gap: 24px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 32px 24px 56px;
+  padding: 28px 24px 56px;
 }
 
-.sidebar {
-  align-self: start;
-}
-
-.content {
-  min-width: 0;
-}
+.sidebar, .card-column { align-self: start; }
+.content { min-width: 0; }
 
 .panel {
   background: var(--surface);
@@ -85,14 +74,8 @@ body::before {
   margin-bottom: 18px;
 }
 
-.sticky-panel {
-  position: sticky;
-  top: 24px;
-}
-
-.hero-panel {
-  border-top: 4px solid var(--accent);
-}
+.sticky-panel { position: sticky; top: 24px; }
+.hero-panel { border-top: 4px solid var(--accent); }
 
 .eyebrow {
   margin: 0 0 10px;
@@ -103,32 +86,10 @@ body::before {
   color: var(--muted);
 }
 
-h1 {
-  margin: 0 0 10px;
-  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
-  line-height: 1.15;
-}
-
-h2 {
-  margin: 0 0 14px;
-  font-size: 1rem;
-}
-
-h3 {
-  margin: 0 0 10px;
-  font-size: 1rem;
-}
-
-.lead {
-  margin: 0;
-  max-width: 64ch;
-  color: var(--muted);
-}
-
-#questionView {
-  display: grid;
-  gap: 12px;
-}
+h1 { margin: 0 0 10px; font-size: clamp(1.75rem, 2.5vw, 2.5rem); line-height: 1.15; }
+h2 { margin: 0 0 12px; font-size: 1rem; }
+h3 { margin: 0 0 10px; font-size: 1rem; }
+.lead { margin: 0; max-width: 64ch; color: var(--muted); }
 
 button {
   appearance: none;
@@ -139,48 +100,17 @@ button {
   padding: 11px 16px;
   font: inherit;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
 }
 
-button:hover {
-  background: var(--accent);
-}
-
-button:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-button:disabled:hover {
-  background: #fff;
-}
+button:hover { background: var(--accent); }
+button:disabled { opacity: 0.4; cursor: default; }
+button:disabled:hover { background: #fff; }
 
 .ghost-button {
   width: 100%;
   margin-top: 10px;
   text-align: left;
-}
-
-.option-button {
-  width: 100%;
-  text-align: left;
-  border-radius: 16px;
-  padding: 16px 18px;
-  background: #fff;
-  border: 1px solid var(--line);
-  font-weight: 600;
-}
-
-.option-button:hover {
-  background: var(--accent-soft);
-  border-color: #111;
-  transform: translateY(-1px);
-}
-
-.option-button::after {
-  content: "→";
-  float: right;
-  color: var(--muted);
 }
 
 .breadcrumb {
@@ -209,61 +139,97 @@ button:disabled:hover {
   background: var(--line);
 }
 
-.breadcrumb-item.current {
-  color: var(--text);
-  font-weight: 600;
+.breadcrumb-item.current { color: var(--text); font-weight: 600; }
+.breadcrumb-item.current::before { background: var(--accent); }
+
+#questionView { display: grid; gap: 18px; }
+
+.tree-node {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  position: relative;
 }
 
-.breadcrumb-item.current::before {
-  background: var(--accent);
+.tree-node + .tree-node::before {
+  content: "";
+  position: absolute;
+  left: 34px;
+  top: -20px;
+  width: 2px;
+  height: 20px;
+  background: var(--line-strong);
 }
 
-#cardView {
-  display: grid;
-  gap: 18px;
+.tree-title { font-size: 1rem; margin-bottom: 8px; }
+.tree-description { margin: 0 0 14px; color: var(--muted); }
+.option-stack { display: grid; gap: 10px; }
+
+.option-button {
+  width: 100%;
+  text-align: left;
+  border-radius: 16px;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
+
+.option-button:hover {
+  background: var(--accent-soft);
+  border-color: #111;
+  transform: translateY(-1px);
+}
+
+.option-button.is-selected {
+  background: var(--accent-soft);
+  border-color: #111;
+  box-shadow: inset 0 0 0 1px #111;
+}
+
+.option-button.is-faded { opacity: 0.42; }
+
+.option-meta {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.card-column .panel { position: sticky; top: 24px; }
+.info-card-title { margin: 0 0 12px; font-size: 1.25rem; }
+.info-card-description { margin: 0 0 18px; color: var(--muted); }
+#cardView { display: grid; gap: 16px; }
 
 .card-section {
   padding: 18px;
   border: 1px solid var(--line);
   border-radius: 16px;
-  background: #fcfcfa;
+  background: var(--surface-muted);
 }
 
-.card-section ul {
-  margin: 0;
-  padding-left: 18px;
+.card-section ul { margin: 0; padding-left: 18px; }
+.card-section li + li { margin-top: 8px; }
+.hidden { display: none !important; }
+
+@media (max-width: 1100px) {
+  .layout { grid-template-columns: 220px minmax(0, 1fr); }
+  .card-column { grid-column: 2; }
+  .card-column .panel { position: static; }
 }
 
-.card-section li + li {
-  margin-top: 8px;
-}
-
-.hidden {
-  display: none !important;
-}
-
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
-  .sticky-panel {
-    position: static;
-  }
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+  .sticky-panel, .card-column .panel { position: static; }
 }
 
 @media (max-width: 640px) {
-  .layout {
-    padding: 20px 16px 40px;
-  }
-
-  .panel {
-    padding: 18px;
-    border-radius: 14px;
-  }
-
-  .option-button {
-    padding: 14px 15px;
-  }
+  .layout { padding: 20px 16px 40px; }
+  .panel, .tree-node { padding: 18px; border-radius: 14px; }
+  .option-button { padding: 13px 14px; }
 }
