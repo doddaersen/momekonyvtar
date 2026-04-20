@@ -171,12 +171,13 @@
     "mome_content": {
       "type": "card",
       "title": "MOME tartalmak",
-      "description": "Intézményi tartalmak külön kutatási útvonala.",
+      "description": "A MOME-hoz kötődő diplomamunkák, doktori művek és más intézményi források külön kutatási csoportot alkotnak.",
       "sections": [
         {
           "heading": "Haladj tovább",
           "items": [
-            {"label": "Diplomamunkák"},
+            {"label": "Diplomamunkák – nyilvános tartalmak"},
+            {"label": "Diplomamunkák – nem nyilvános tartalmak"},
             {"label": "Doktori művek"},
             {"label": "Egyetemtörténeti források"},
             {"label": "Levéltári források"}
@@ -186,16 +187,19 @@
           "heading": "További ajánlott források",
           "variant": "boxed",
           "items": [
-            "MOME READ",
-            "Intézményi gyűjtemények"
+            "Nyilvános diplomamunkák: teljes szöveg szabadon elérhető, a repozitóriumban szűrhető / kilistázható a nyilvános tartalom.",
+            "Nem nyilvános diplomamunkák: az 2013 előtti és 2013 utáni szakdolgozatok bibliográfiai rekordként jelennek meg, egy helyen kezelhetők.",
+            "A bibliográfiai rekord azt jelenti, hogy teljes szöveg nem érhető el, de a leíró adatok böngészhetők, például év vagy téma szerint.",
+            "MOME READ"
           ]
         },
         {
           "heading": "Segítség",
           "variant": "help",
           "items": [
-            "Mikor érdemes intézményi tartalomból indulni?",
-            "Hogyan hivatkozz intézményi online rekordokra?"
+            "Nyilvános diplomamunka: teljes szöveg szabadon elérhető.",
+            "Nem nyilvános diplomamunka: bibliográfiai adatok alapján kereshető és böngészhető, de a teljes szöveg nem nyilvános.",
+            "Ha nem egyértelmű, hogy egy munka milyen hozzáférésű, a könyvtár tud segíteni az eligazodásban."
           ]
         }
       ]
