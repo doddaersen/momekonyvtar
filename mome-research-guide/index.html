@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOME Könyvtár – Research Guide prototípus</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="brand">MOME Könyvtár</div>
+      <div class="subtitle">Research Guide prototípus</div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <div class="panel sticky-panel">
+          <h2>Útvonal</h2>
+          <nav id="breadcrumb" class="breadcrumb"></nav>
+          <button id="backButton" class="ghost-button" type="button">Vissza</button>
+          <button id="homeButton" class="ghost-button" type="button">Kezdőlap</button>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div class="panel hero-panel">
+          <p class="eyebrow">Prototípus</p>
+          <h1 id="screenTitle">Milyen kutatási helyzetben vagy?</h1>
+          <p id="screenDescription" class="lead">A guide kérdésekkel és rövid útmutatókkal segít megtalálni a megfelelő forrásokat.</p>
+        </div>
+
+        <div id="questionView" class="panel"></div>
+        <div id="cardView" class="panel hidden"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
