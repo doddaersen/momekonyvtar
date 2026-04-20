@@ -30,22 +30,17 @@
       "description": "Nyomtatott könyvek keresése a MOME könyvtár saját állományában vagy külső forrásból.",
       "sections": [
         {
-          "heading": "Rövid leírás",
+          "heading": "Haladj tovább",
           "items": [
-            "Nyomtatott könyvek a MOME saját állományában vagy külső könyvtári forrásokon keresztül érhetők el."
+            {"label": "MOME könyvtári katalógus"},
+            {"label": "MOKKA – magyar közös katalógus"},
+            {"label": "WebCat – külföldi katalógus"},
+            {"label": "Könyvtárközi kölcsönzés"}
           ]
         },
         {
-          "heading": "Keresési utak",
-          "items": [
-            "MOME könyvtári katalógus",
-            "MOKKA – magyar közös katalógus",
-            "WebCat – külföldi katalógus",
-            "Könyvtárközi kölcsönzés"
-          ]
-        },
-        {
-          "heading": "Ajánlott források",
+          "heading": "További ajánlott források",
+          "variant": "boxed",
           "items": [
             "MOME katalógus",
             "MOKKA",
@@ -68,20 +63,15 @@
       "description": "Az e-könyvek egy része a közös katalógusban jelenik meg, további online könyves tartalmak pedig adatbázisokon keresztül érhetők el.",
       "sections": [
         {
-          "heading": "Rövid leírás",
+          "heading": "Haladj tovább",
           "items": [
-            "Digitálisan elérhető könyvek, amelyek részben a katalógusban, részben adatbázisokon keresztül találhatók meg."
+            {"label": "Közös katalógusban megjelenő digitális példányok"},
+            {"label": "Adatbázisokból elérhető e-book gyűjtemények"}
           ]
         },
         {
-          "heading": "Keresési utak",
-          "items": [
-            "Közös katalógusban megjelenő digitális példányok",
-            "Adatbázisokból elérhető e-book gyűjtemények"
-          ]
-        },
-        {
-          "heading": "Ajánlott források",
+          "heading": "További ajánlott források",
+          "variant": "boxed",
           "items": [
             "Közös katalógus",
             "Adatbázisok e-book gyűjteményei"
@@ -103,20 +93,15 @@
       "description": "A folyóiratos forrásoknál különválik a nyomtatott és az online keresési út.",
       "sections": [
         {
-          "heading": "Rövid leírás",
+          "heading": "Haladj tovább",
           "items": [
-            "Folyóiratcím vagy konkrét cikk keresése esetén eltérő utak vezetnek a nyomtatott és az online forrásokhoz."
+            {"label": "Nyomtatott → FI-nyilvántartás + MATARKA"},
+            {"label": "Online → adatbázisok"}
           ]
         },
         {
-          "heading": "Keresési utak",
-          "items": [
-            "Nyomtatott: FI-nyilvántartás + MATARKA",
-            "Online: adatbázisok"
-          ]
-        },
-        {
-          "heading": "Ajánlott források",
+          "heading": "További ajánlott források",
+          "variant": "boxed",
           "items": [
             "FI-nyilvántartás",
             "MATARKA",
@@ -140,22 +125,17 @@
       "description": "Digitális képi és multimédiás források keresése múzeumi, egyetemi és egyéb online gyűjteményekben.",
       "sections": [
         {
-          "heading": "Rövid leírás",
+          "heading": "Haladj tovább",
           "items": [
-            "Képek, tárgyfotók, reprodukciók, plakátok és más vizuális dokumentumok keresése online gyűjteményekben."
+            {"label": "Múzeumi digitális gyűjtemények"},
+            {"label": "Egyetemi digitális gyűjtemények"},
+            {"label": "Képarchívumok"},
+            {"label": "Multimédiás gyűjtemények"}
           ]
         },
         {
-          "heading": "Keresési utak",
-          "items": [
-            "Múzeumi digitális gyűjtemények",
-            "Egyetemi digitális gyűjtemények",
-            "Képarchívumok",
-            "Multimédiás gyűjtemények"
-          ]
-        },
-        {
-          "heading": "Ajánlott források",
+          "heading": "További ajánlott források",
+          "variant": "boxed",
           "items": [
             "Múzeumi digitális gyűjtemények",
             "Képarchívumok",
@@ -178,12 +158,12 @@
       "description": "Exploratív út azoknak, akik még nem tudják pontosan, mit keresnek.",
       "sections": [
         {
-          "heading": "Lehetséges indulópontok",
+          "heading": "Haladj tovább",
           "items": [
-            "Olvasótermi válogatott könyvek tematikus rendben",
-            "Tárgyszavas keresés a katalógusban",
-            "Folyóiratok böngészése",
-            "Külső inspirációs források (később Zotero)"
+            {"label": "Olvasótermi válogatott könyvek tematikus rendben"},
+            {"label": "Tárgyszavas keresés a katalógusban"},
+            {"label": "Folyóiratok böngészése"},
+            {"label": "Külső inspirációs források (később Zotero)"}
           ]
         }
       ]
@@ -194,22 +174,17 @@
       "description": "Intézményi tartalmak külön kutatási útvonala.",
       "sections": [
         {
-          "heading": "Rövid leírás",
+          "heading": "Haladj tovább",
           "items": [
-            "A MOME-hoz kötődő diplomamunkák, doktori művek és más intézményi források külön kutatási csoportot alkotnak."
+            {"label": "Diplomamunkák"},
+            {"label": "Doktori művek"},
+            {"label": "Egyetemtörténeti források"},
+            {"label": "Levéltári források"}
           ]
         },
         {
-          "heading": "Keresési utak",
-          "items": [
-            "Diplomamunkák",
-            "Doktori művek",
-            "Egyetemtörténeti források",
-            "Levéltári források"
-          ]
-        },
-        {
-          "heading": "Ajánlott források",
+          "heading": "További ajánlott források",
+          "variant": "boxed",
           "items": [
             "MOME READ",
             "Intézményi gyűjtemények"
