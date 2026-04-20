@@ -187,6 +187,14 @@ function appendSectionItem(list, item, isRouteSection = false) {
     }
 
     if (Array.isArray(item.children) && item.children.length) {
+      const helperBox = document.createElement('div');
+      helperBox.className = 'route-helper-box';
+
+      const helperHead = document.createElement('div');
+      helperHead.className = 'route-helper-head';
+      helperHead.innerHTML = '<span class="route-helper-icon">i</span><span>Információ</span>';
+      helperBox.appendChild(helperHead);
+
       const childList = document.createElement('ul');
       childList.className = 'route-children';
       item.children.forEach(child => {
@@ -208,7 +216,8 @@ function appendSectionItem(list, item, isRouteSection = false) {
         }
         childList.appendChild(childLi);
       });
-      li.appendChild(childList);
+      helperBox.appendChild(childList);
+      li.appendChild(helperBox);
     }
   }
 
