@@ -1,0 +1,191 @@
+{
+  "startNode": "start",
+  "nodes": {
+    "start": {
+      "type": "question",
+      "title": "Milyen kutatási helyzetben vagy?",
+      "description": "A guide kérdésekkel és rövid útmutatókkal segít megtalálni a megfelelő forrásokat.",
+      "options": [
+        {"label": "Szakirodalmat keresek egy konkrét témához", "target": "literature"},
+        {"label": "Inspirációt vagy példákat keresek", "target": "inspiration"},
+        {"label": "MOME tartalmakat keresek", "target": "mome_content"}
+      ]
+    },
+    "literature": {
+      "type": "question",
+      "title": "Milyen típusú forrást keresel?",
+      "description": "Válaszd ki azt a forrástípust, amellyel most dolgoznál.",
+      "options": [
+        {"label": "Nyomtatott könyvek", "target": "print_books"},
+        {"label": "E-könyvek", "target": "ebooks"},
+        {"label": "Online folyóiratcikkek", "target": "article_databases"},
+        {"label": "Nyomtatott magyar nyelvű folyóiratok", "target": "hungarian_print_journals"},
+        {"label": "Vizuális források adatbázisai", "target": "visual_sources"}
+      ]
+    },
+    "print_books": {
+      "type": "question",
+      "title": "Nyomtatott könyvek",
+      "description": "Döntsd el, hogy a MOME saját állományában keresel, vagy külső forrásból indulnál.",
+      "options": [
+        {"label": "MOME Könyvtár", "target": "card_print_books_mome"},
+        {"label": "Ha nincs meg a könyv", "target": "card_print_books_external"}
+      ]
+    },
+    "ebooks": {
+      "type": "card",
+      "title": "E-könyvek",
+      "description": "Az e-könyvek egy része a közös katalógusban jelenik meg, további online könyves tartalmak pedig adatbázisokon keresztül érhetők el.",
+      "sections": [
+        {
+          "heading": "Keresési utak",
+          "items": [
+            "Közös katalógusban megjelenő digitális példányok",
+            "Adatbázisokból elérhető e-book gyűjtemények"
+          ]
+        }
+      ]
+    },
+    "article_databases": {
+      "type": "card",
+      "title": "Online folyóiratcikkek és adatbázisok",
+      "description": "A legfontosabb online cikkadatbázisok művészet, design és kapcsolódó területek kutatásához.",
+      "sections": [
+        {
+          "heading": "Ajánlott adatbázisok",
+          "items": [
+            "EBSCO",
+            "JSTOR",
+            "További művészeti / design adatbázisok"
+          ]
+        },
+        {
+          "heading": "Segítő megjegyzés",
+          "items": [
+            "Adatbázisonként érdemes kiemelni néhány számunkra releváns folyóiratcímet.",
+            "A válogatás csak belépési pont: az adatbázisok sok más folyóiratot is tartalmaznak."
+          ]
+        }
+      ]
+    },
+    "hungarian_print_journals": {
+      "type": "card",
+      "title": "Nyomtatott magyar nyelvű folyóiratok",
+      "description": "Magyar nyelvű nyomtatott folyóiratok keresése a saját folyóirat-nyilvántartás és a MATARKA segítségével.",
+      "sections": [
+        {
+          "heading": "MOME folyóirat-nyilvántartás",
+          "items": [
+            "Aktuális előfizetések",
+            "Egyéb folyóiratok"
+          ]
+        },
+        {
+          "heading": "Tájékozódási link",
+          "items": [
+            "MATARKA – keresés magyar folyóiratok tartalomjegyzékeiben szerző, cím vagy téma alapján"
+          ]
+        }
+      ]
+    },
+    "visual_sources": {
+      "type": "card",
+      "title": "Vizuális források adatbázisai",
+      "description": "Digitális képi és multimédiás források keresése múzeumi, egyetemi és egyéb online gyűjteményekben.",
+      "sections": [
+        {
+          "heading": "Lehetséges forrástípusok",
+          "items": [
+            "Múzeumi digitális gyűjtemények",
+            "Egyetemi digitális gyűjtemények",
+            "Képarchívumok",
+            "Multimédiás gyűjtemények",
+            "Open access vizuális források"
+          ]
+        },
+        {
+          "heading": "Kapcsolódó módszertani segítség",
+          "items": [
+            "Hogyan hivatkozz képekre",
+            "Hogyan hivatkozz online forrásokra"
+          ]
+        }
+      ]
+    },
+    "inspiration": {
+      "type": "card",
+      "title": "Inspirációt vagy példákat keresek",
+      "description": "Exploratív út azoknak, akik még nem tudják pontosan, mit keresnek.",
+      "sections": [
+        {
+          "heading": "Lehetséges indulópontok",
+          "items": [
+            "Olvasótermi válogatott könyvek tematikus rendben",
+            "Tárgyszavas keresés a katalógusban",
+            "Folyóiratok böngészése",
+            "Külső inspirációs források (később Zotero)"
+          ]
+        }
+      ]
+    },
+    "mome_content": {
+      "type": "card",
+      "title": "MOME tartalmak",
+      "description": "Intézményi tartalmak külön kutatási útvonala.",
+      "sections": [
+        {
+          "heading": "Fő csoportok",
+          "items": [
+            "Diplomamunkák",
+            "Doktori művek",
+            "Egyetemtörténeti források",
+            "Levéltári források"
+          ]
+        }
+      ]
+    },
+    "card_print_books_mome": {
+      "type": "card",
+      "title": "Nyomtatott könyvek – MOME Könyvtár",
+      "description": "A könyv keresése a MOME könyvtár saját állományában.",
+      "sections": [
+        {
+          "heading": "Mit tegyél?",
+          "items": [
+            "Keresés a katalógusban",
+            "Jelzet felírása",
+            "Fizikai lelőhely ellenőrzése"
+          ]
+        },
+        {
+          "heading": "Segítség",
+          "items": [
+            "Mit jelent a jelzet?",
+            "Mi a különbség a szabadpolcos, olvasótermi és raktári példány között?"
+          ]
+        }
+      ]
+    },
+    "card_print_books_external": {
+      "type": "card",
+      "title": "Ha nincs meg a könyv",
+      "description": "Külső katalógusok és könyvtárközi kölcsönzés, ha a keresett nyomtatott könyv nincs meg a MOME könyvtárban.",
+      "sections": [
+        {
+          "heading": "Külső keresés",
+          "items": [
+            "MOKKA – magyar közös katalógus",
+            "WebCat – külföldi katalógus"
+          ]
+        },
+        {
+          "heading": "Szolgáltatás",
+          "items": [
+            "Könyvtárközi kölcsönzés",
+            "Kapcsolódó ügyintéző kolléga"
+          ]
+        }
+      ]
+    }
+  }
+}
