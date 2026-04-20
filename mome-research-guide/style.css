@@ -175,6 +175,32 @@ button:disabled:hover { background: #fff; }
   gap: 10px;
 }
 
+.pacman-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 14px;
+}
+
+.pacman {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: conic-gradient(from 45deg, var(--accent) 0deg 315deg, transparent 315deg 360deg);
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.pacman-dots {
+  flex: 1 1 auto;
+  height: 6px;
+  background-image: radial-gradient(circle, #9bb618 1.5px, transparent 1.6px);
+  background-size: 14px 6px;
+  background-repeat: repeat-x;
+  background-position: left center;
+  opacity: 0.95;
+}
+
 .option-button {
   width: 100%;
   text-align: left;
