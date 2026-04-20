@@ -91,6 +91,8 @@ h2 { margin: 0 0 12px; font-size: 1rem; }
 h3 { margin: 0 0 10px; font-size: 1rem; }
 .lead { margin: 0; max-width: 64ch; color: var(--muted); }
 
+a { color: inherit; text-decoration-thickness: 1px; }
+
 button {
   appearance: none;
   border: 1px solid #111;
@@ -223,6 +225,11 @@ button:disabled:hover { background: #fff; }
 .card-column .panel { position: sticky; top: 24px; }
 #cardView { display: grid; gap: 16px; }
 
+.card-bundle {
+  display: grid;
+  gap: 16px;
+}
+
 .info-card {
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -251,6 +258,63 @@ button:disabled:hover { background: #fff; }
 }
 
 .card-section li + li { margin-top: 8px; }
+
+.card-section.route-box {
+  padding: 14px 16px;
+  border: 1px dashed #adc052;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(194, 215, 76, 0.12) 0%, rgba(237, 243, 207, 0.42) 100%);
+}
+
+.route-list,
+.route-children {
+  list-style: none;
+  padding-left: 0;
+}
+
+.route-item {
+  position: relative;
+  padding-left: 22px;
+}
+
+.route-item::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #7d9530;
+  font-weight: 700;
+}
+
+.route-item > span,
+.route-item > a {
+  font-weight: 600;
+}
+
+.route-children {
+  margin-top: 10px;
+  margin-left: 8px;
+  padding-left: 16px;
+  border-left: 2px solid #c5d887;
+}
+
+.route-child-item {
+  position: relative;
+  padding-left: 16px;
+  color: var(--muted);
+}
+
+.route-child-item::before {
+  content: "↳";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #7d9530;
+}
+
+.route-child-item + .route-child-item {
+  margin-top: 8px;
+}
 
 .card-section.boxed {
   padding: 16px;
@@ -285,5 +349,6 @@ button:disabled:hover { background: #fff; }
   .option-button { padding: 13px 14px; }
   .option-stack.compact-inline .option-button { padding: 8px 12px; }
   .card-section.boxed,
-  .card-section.help-box { padding: 14px; }
+  .card-section.help-box,
+  .card-section.route-box { padding: 14px; }
 }
