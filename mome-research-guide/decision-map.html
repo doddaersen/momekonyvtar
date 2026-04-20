@@ -11,7 +11,6 @@
       --text: #111111;
       --muted: #6b6b6b;
       --line: #b96a57;
-      --line-soft: #d9b4aa;
       --accent: #c2d74c;
       --accent-soft: #edf3cf;
       --result: #6fb7a2;
@@ -28,284 +27,179 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       line-height: 1.4;
     }
-    .wrap {
-      max-width: 1700px;
-      margin: 0 auto;
-      padding: 28px 20px 60px;
-    }
-    .eyebrow {
-      margin: 0 0 8px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: var(--muted);
-      font-weight: 700;
-    }
-    h1 {
-      margin: 0 0 10px;
-      font-size: clamp(28px, 4vw, 44px);
-      line-height: 1.06;
-    }
-    .lead {
-      max-width: 72ch;
-      margin: 0 0 22px;
-      color: var(--muted);
-    }
-    .board {
-      overflow-x: auto;
-      padding-bottom: 28px;
-    }
-    .canvas {
-      position: relative;
-      width: 1660px;
-      height: 1640px;
-      margin: 0 auto;
-    }
-    svg.lines {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
+    .wrap { max-width: 1740px; margin: 0 auto; padding: 28px 20px 60px; }
+    .eyebrow { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 44px); line-height: 1.06; }
+    .lead { max-width: 76ch; margin: 0 0 22px; color: var(--muted); }
+    .board { overflow-x: auto; padding-bottom: 28px; }
+    .canvas { position: relative; width: 1700px; height: 2060px; margin: 0 auto; }
+    svg.lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
     .node {
-      position: absolute;
-      background: var(--surface);
-      border: 2px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px 18px 16px;
+      position: absolute; background: var(--surface); border: 2px solid var(--line);
+      border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 18px 16px;
     }
-    .node--start {
-      background: var(--line);
-      color: #fff;
-    }
+    .node--start { background: var(--line); color: #fff; }
     .node--group { border-color: var(--group); }
     .node--result { border-color: var(--result); }
-    .node-title {
-      margin: 0;
-      font-size: 15px;
-      line-height: 1.25;
-      font-weight: 700;
-    }
-    .node-sub {
-      margin: 8px 0 0;
-      font-size: 12px;
-      color: var(--muted);
-    }
+    .node-title { margin: 0; font-size: 15px; line-height: 1.25; font-weight: 700; }
+    .node-sub { margin: 8px 0 0; font-size: 12px; color: var(--muted); }
     .node--start .node-sub { color: rgba(255,255,255,.85); }
     .badge {
-      position: absolute;
-      top: -22px;
-      left: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      color: var(--line);
+      position: absolute; top: -22px; left: 8px; font-size: 12px; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase; color: var(--line);
     }
     .choice {
-      position: absolute;
-      background: #fff;
-      border: 2px solid var(--line);
-      border-radius: var(--pill-radius);
-      min-height: 54px;
-      padding: 12px 16px;
-      box-shadow: var(--shadow);
-      font-size: 14px;
-      font-weight: 600;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; background: #fff; border: 2px solid var(--line); border-radius: var(--pill-radius);
+      min-height: 54px; padding: 12px 16px; box-shadow: var(--shadow); font-size: 14px; font-weight: 600;
+      text-align: center; display: flex; align-items: center; justify-content: center;
     }
-    .choice--accent {
-      border-color: #94b117;
-      background: var(--accent-soft);
-    }
-    .choice--group {
-      border-color: var(--group);
-    }
+    .choice--accent { border-color: #94b117; background: var(--accent-soft); }
+    .choice--group { border-color: var(--group); }
     .panel-note {
-      position: absolute;
-      background: #fff;
-      border: 1.5px solid #d8e1b1;
-      border-radius: 18px;
-      padding: 14px;
-      color: #555;
-      font-size: 14px;
-      box-shadow: var(--shadow);
+      position: absolute; background: #fff; border: 1.5px solid #d8e1b1; border-radius: 18px;
+      padding: 14px; color: #555; font-size: 14px; box-shadow: var(--shadow);
     }
     .panel-note .head {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 13px;
+      display: inline-flex; align-items: center; gap: 8px; margin-bottom: 8px; color: var(--muted);
+      font-weight: 600; font-size: 13px;
     }
     .icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 1px solid #a8b67a;
-      font-size: 12px;
-      line-height: 1;
+      display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px;
+      border-radius: 50%; border: 1px solid #a8b67a; font-size: 12px; line-height: 1;
     }
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px 18px;
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 14px;
-    }
+    .legend { display: flex; flex-wrap: wrap; gap: 14px 18px; margin-top: 18px; color: var(--muted); font-size: 14px; }
     .legend-item { display: inline-flex; align-items: center; gap: 8px; }
-    .legend-swatch {
-      width: 18px;
-      height: 18px;
-      border-radius: 6px;
-      border: 2px solid var(--line);
-      background: var(--surface);
-    }
+    .legend-swatch { width: 18px; height: 18px; border-radius: 6px; border: 2px solid var(--line); background: var(--surface); }
     .legend-swatch.start { background: var(--line); }
     .legend-swatch.group { border-color: var(--group); }
     .legend-swatch.result { border-color: var(--result); }
     .legend-swatch.accent { border-color: #94b117; background: var(--accent-soft); }
-    .footnote {
-      margin-top: 14px;
-      font-size: 13px;
-      color: var(--muted);
-      max-width: 84ch;
-    }
+    .footnote { margin-top: 14px; font-size: 13px; color: var(--muted); max-width: 84ch; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <p class="eyebrow">MOME Könyvtár / Research Guide</p>
     <h1>Döntési váz – statikus prototípus</h1>
-    <p class="lead">A szerkezet függőleges haladást mutat: kutatási helyzet → ágak → forrástípusok mint külön gombok → konkrét utak → jobbra nyíló eredménykártyák. Így a végpontok a korábbi logikának megfelelően oldalirányban nyílnak ki.</p>
+    <p class="lead">A teljes struktúra külön sávokra bontva jelenik meg, hogy a középső egységek se csússzanak össze: kutatási helyzet → konkrét döntési ág → jobbra nyíló eredménykártya. A szakirodalmi ágon belül a forrástípusok külön, azonos magasságú gombokként látszanak.</p>
 
     <div class="board">
       <div class="canvas">
-        <svg class="lines" viewBox="0 0 1660 1640" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <svg class="lines" viewBox="0 0 1700 2060" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="#b96a57" />
             </marker>
           </defs>
+          <path d="M850 150 L850 220" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M850 220 L210 220 L210 300" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M850 220 L610 220 L610 300" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M850 220 L1010 220 L1010 300" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M850 220 L1410 220 L1410 300" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
 
-          <path d="M830 150 L830 230" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M830 230 L190 230 L190 300" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M830 230 L560 230 L560 300" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M830 230 L900 230 L900 300" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M830 230 L1270 230 L1270 300" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M210 440 L210 520" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M210 520 L120 520 L120 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M210 520 L360 520 L360 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M210 520 L620 520 L620 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M210 520 L880 520 L880 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M210 520 L1140 520 L1140 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M220 627 L400 627" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M470 627 L680 627" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M740 627 L980 627" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M1000 627 L1260 627" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M1260 627 L1540 627" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
 
-          <path d="M190 440 L190 520" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M190 520 L70 520 L70 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M190 520 L330 520 L330 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M190 520 L590 520 L590 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M190 520 L850 520 L850 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M190 520 L1110 520 L1110 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M610 440 L610 780" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M740 847 L1000 847" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
 
-          <path d="M120 627 L300 627" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M390 627 L560 627" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M680 627 L860 627" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M920 627 L1160 627" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M1180 627 L1480 627" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M1010 440 L1010 1080" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M1140 1147 L1380 1147" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
 
-          <path d="M560 440 L560 540" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M560 540 L560 620" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M690 690 L980 690" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M1410 440 L1410 1380" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M1540 1447 L1620 1447" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
 
-          <path d="M900 440 L900 540" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M900 540 L900 620" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M1020 690 L1270 690" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-
-          <path d="M1270 440 L1270 540" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M1270 540 L1270 620" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M1400 690 L1570 690" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-
-          <path d="M300 900 L300 980 L520 980" stroke="#d9b4aa" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
-          <path d="M300 900 L300 1160 L880 1160" stroke="#d9b4aa" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+          <path d="M520 730 L520 820" stroke="#d9b4aa" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+          <path d="M520 820 L760 820" stroke="#d9b4aa" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+          <path d="M520 730 L520 980 L980 980" stroke="#d9b4aa" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
         </svg>
 
-        <div class="node node--start" style="left:695px; top:40px; width:270px; height:110px;">
+        <div class="node node--start" style="left:715px; top:40px; width:270px; height:110px;">
           <div class="badge">Start</div>
           <p class="node-title">Milyen kutatási helyzetben vagy?</p>
-          <p class="node-sub">A teljes útvonal első döntési pontja</p>
+          <p class="node-sub">A teljes útvonal első döntési pontja.</p>
         </div>
 
-        <div class="node" style="left:60px; top:300px; width:260px; height:140px;">
+        <div class="node" style="left:80px; top:300px; width:260px; height:140px;">
           <p class="node-title">Tudom, mit keresek</p>
-          <p class="node-sub">Itt a hallgató már szakirodalmat keres, tehát célzott keresési helyzetből indul.</p>
+          <p class="node-sub">Célzott szakirodalmi keresés, több lehetséges forrástípussal.</p>
         </div>
-
-        <div class="node" style="left:430px; top:300px; width:260px; height:140px;">
+        <div class="node" style="left:480px; top:300px; width:260px; height:140px;">
           <p class="node-title">Tájékozódom</p>
-          <p class="node-sub">Még nem tudom pontosan, mit keresek, inkább irányokat és belépési pontokat keresek.</p>
+          <p class="node-sub">Még nem tudom pontosan, mit keresek, inkább belépési pontokat keresek.</p>
         </div>
-
-        <div class="node" style="left:770px; top:300px; width:260px; height:140px;">
+        <div class="node" style="left:880px; top:300px; width:260px; height:140px;">
           <p class="node-title">Vizuális tartalmat vagy példákat keresek</p>
           <p class="node-sub">Képek, példák, gyűjtemények, vizuális precedensek.</p>
         </div>
-
-        <div class="node" style="left:1140px; top:300px; width:260px; height:140px;">
+        <div class="node" style="left:1280px; top:300px; width:260px; height:140px;">
           <p class="node-title">MOME tartalmat keresek</p>
           <p class="node-sub">Diplomamunkák, doktori művek, egyetemtörténeti és levéltári anyagok.</p>
         </div>
 
-        <div class="choice choice--accent" style="left:20px; top:600px; width:100px;">Nyomtatott könyv</div>
-        <div class="choice choice--accent" style="left:270px; top:600px; width:120px;">E-könyv</div>
-        <div class="choice choice--accent" style="left:500px; top:600px; width:180px;">Folyóirat / folyóiratcikk</div>
-        <div class="choice choice--accent" style="left:785px; top:600px; width:130px;">Vizuális forrás</div>
-        <div class="choice choice--accent" style="left:1050px; top:600px; width:120px;">MOME tartalom</div>
+        <div class="choice choice--accent" style="left:100px; top:600px; width:120px;">Nyomtatott könyv</div>
+        <div class="choice choice--accent" style="left:350px; top:600px; width:120px;">E-könyv</div>
+        <div class="choice choice--accent" style="left:560px; top:600px; width:180px;">Folyóirat / folyóiratcikk</div>
+        <div class="choice choice--accent" style="left:840px; top:600px; width:160px;">Vizuális forrás</div>
+        <div class="choice choice--accent" style="left:1080px; top:600px; width:180px;">MOME tartalom</div>
 
-        <div class="choice choice--group" style="left:430px; top:620px; width:260px;">Olvasóterem / tárgyszó / folyóirat / inspirációs források</div>
-        <div class="choice choice--group" style="left:780px; top:620px; width:240px;">Múzeumi és egyetemi vizuális adatbázisok</div>
-        <div class="choice choice--group" style="left:1140px; top:620px; width:260px;">Diploma / doktori / egyetemtörténet / levéltár</div>
-
-        <div class="node node--result" style="left:300px; top:560px; width:200px; height:130px;">
+        <div class="node node--result" style="left:400px; top:560px; width:220px; height:134px;">
           <p class="node-title">Nyomtatott könyv kártya</p>
-          <p class="node-sub">MOME katalógus + könyvtárközi logika</p>
+          <p class="node-sub">MOME katalógus + könyvtárközi logika.</p>
         </div>
-        <div class="node node--result" style="left:560px; top:560px; width:220px; height:130px;">
+        <div class="node node--result" style="left:680px; top:560px; width:240px; height:134px;">
           <p class="node-title">E-könyv kártya</p>
-          <p class="node-sub">Katalógus és e-book adatbázisok</p>
+          <p class="node-sub">Katalógus és e-book adatbázisok.</p>
         </div>
-        <div class="node node--result" style="left:860px; top:560px; width:260px; height:130px;">
+        <div class="node node--result" style="left:980px; top:560px; width:260px; height:134px;">
           <p class="node-title">Folyóirat / cikk kártya</p>
-          <p class="node-sub">FI-nyilvántartás, MATARKA, adatbázisok</p>
+          <p class="node-sub">FI-nyilvántartás, MATARKA, adatbázisok.</p>
         </div>
-        <div class="node node--result" style="left:980px; top:620px; width:260px; height:140px;">
-          <p class="node-title">Tájékozódó végpontok</p>
-          <p class="node-sub">Kurált belépési pontok és első lépések</p>
-        </div>
-        <div class="node node--result" style="left:1270px; top:620px; width:260px; height:140px;">
+        <div class="node node--result" style="left:1260px; top:560px; width:260px; height:134px;">
           <p class="node-title">Vizuális forrás kártya</p>
-          <p class="node-sub">Gyűjtemények + hivatkozási segítség</p>
+          <p class="node-sub">Gyűjtemények + hivatkozási segítség.</p>
         </div>
-        <div class="node node--result" style="left:1570px; top:620px; width:250px; height:140px;">
+        <div class="node node--result" style="left:1540px; top:560px; width:140px; height:134px;">
           <p class="node-title">MOME tartalom kártya</p>
-          <p class="node-sub">Intézményi tartalom és hozzáférési logika</p>
+          <p class="node-sub">Intézményi tartalom.</p>
         </div>
 
-        <div class="choice choice--accent" style="left:520px; top:940px; width:160px;">MOME katalógus</div>
-        <div class="choice choice--accent" style="left:880px; top:1120px; width:250px;">Nem találod? → könyvtárközi kölcsönzés</div>
+        <div class="choice choice--group" style="left:480px; top:780px; width:260px;">Olvasóterem / tárgyszó / folyóirat / inspirációs források</div>
+        <div class="node node--result" style="left:1000px; top:780px; width:280px; height:134px;">
+          <p class="node-title">Tájékozódó végpontok</p>
+          <p class="node-sub">Kurált belépési pontok és első lépések.</p>
+        </div>
 
-        <div class="panel-note" style="left:460px; top:1015px; width:360px;">
+        <div class="choice choice--group" style="left:880px; top:1080px; width:260px;">Múzeumi és egyetemi vizuális adatbázisok</div>
+        <div class="node node--result" style="left:1380px; top:1080px; width:250px; height:134px;">
+          <p class="node-title">Vizuális forrás kártya</p>
+          <p class="node-sub">Gyűjtemények + hivatkozási segítség.</p>
+        </div>
+
+        <div class="choice choice--group" style="left:1280px; top:1380px; width:260px;">Diploma / doktori / egyetemtörténet / levéltár</div>
+        <div class="node node--result" style="left:1620px; top:1380px; width:60px; height:134px; overflow:hidden;">
+          <p class="node-title">MOME</p>
+          <p class="node-sub">Tartalom.</p>
+        </div>
+
+        <div class="choice choice--accent" style="left:760px; top:792px; width:170px;">MOME katalógus</div>
+        <div class="panel-note" style="left:760px; top:860px; width:300px;">
           <div class="head"><span class="icon">i</span><span>Információ</span></div>
           <div>Mit jelent a jelzet?</div>
           <div>Mi a különbség a szabadpolcos, olvasótermi és raktári példány között?</div>
           <div>Hol találod meg fizikailag a könyvet?</div>
         </div>
-
-        <div class="panel-note" style="left:880px; top:1188px; width:360px;">
+        <div class="choice choice--accent" style="left:980px; top:953px; width:280px;">Nem találod? → könyvtárközi kölcsönzés</div>
+        <div class="panel-note" style="left:980px; top:1025px; width:320px;">
           <div class="head"><span class="icon">i</span><span>Következő kártya logikája</span></div>
           <div>Itt jelenhet meg a MOKKA, a WorldCat és a könyvtári segítségkérés további lépésként.</div>
         </div>
@@ -316,10 +210,10 @@
       <div class="legend-item"><span class="legend-swatch start"></span> induló döntési pont</div>
       <div class="legend-item"><span class="legend-swatch"></span> választási doboz</div>
       <div class="legend-item"><span class="legend-swatch accent"></span> külön forrásgomb / fő út</div>
-      <div class="legend-item"><span class="legend-swatch result"></span> eredménykártya / jobbra nyíló végpont</div>
+      <div class="legend-item"><span class="legend-swatch result"></span> jobbra nyíló eredménykártya</div>
     </div>
 
-    <p class="footnote">Ebben a változatban a végső információs kártyák jobbra nyílnak a döntési pontokhoz képest, miközben a teljes váz továbbra is függőlegesen olvasható.</p>
+    <p class="footnote">A teljes struktúra ebben a változatban már külön sávokra bomlik, hogy a középső egységek ne csússzanak egymásra. A következő körben a dobozszövegek rövidíthetők és a jobb szélső MOME-ág szélesebbre húzható.</p>
   </div>
 </body>
 </html>
