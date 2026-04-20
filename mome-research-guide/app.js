@@ -162,8 +162,9 @@ function gatherCards(visiblePath) {
   return [...new Set(cards)];
 }
 
-function appendSectionItem(list, item) {
+function appendSectionItem(list, item, isRouteSection = false) {
   const li = document.createElement('li');
+  if (isRouteSection) li.classList.add('route-item');
 
   if (typeof item === 'string') {
     li.innerText = item;
@@ -192,6 +193,10 @@ function renderCards(cardIds) {
     return;
   }
 
+  const bundle = document.createElement('div');
+  bundle.className = 'card-bundle';
+  bundle.dataset.bundleCount = String(cardIds.length);
+
   cardIds.forEach(cardId => {
     const node = getNode(cardId);
     if (!node) return;
@@ -215,6 +220,8 @@ function renderCards(cardIds) {
     (node.sections || []).forEach(section => {
       const sectionWrap = document.createElement('section');
       sectionWrap.className = 'card-section';
+      const isRouteSection = section.variant === 'route' || section.heading === 'Haladj tovább';
+      if (isRouteSection) sectionWrap.classList.add('route-box');
       if (section.variant === 'boxed') sectionWrap.classList.add('boxed');
       if (section.variant === 'help') sectionWrap.classList.add('help-box');
 
@@ -223,15 +230,17 @@ function renderCards(cardIds) {
       sectionWrap.appendChild(heading);
 
       const list = document.createElement('ul');
-      (section.items || []).forEach(item => appendSectionItem(list, item));
+      if (isRouteSection) list.classList.add('route-list');
+      (section.items || []).forEach(item => appendSectionItem(list, item, isRouteSection));
 
       sectionWrap.appendChild(list);
       card.appendChild(sectionWrap);
     });
 
-    cardView.appendChild(card);
+    bundle.appendChild(card);
   });
 
+  cardView.appendChild(bundle);
   cardView.classList.remove('hidden');
 }
 
