@@ -18,8 +18,8 @@
       --shadow: 0 8px 18px rgba(0,0,0,.045);
       --radius: 22px;
       --pill-radius: 18px;
-      --connector-height: 58px;
-      --branch-drop: 46px;
+      --connector-height: 64px;
+      --branch-drop: 58px;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -121,7 +121,7 @@
     }
     .breadcrumb-item.current { color: var(--text); font-weight: 600; }
     .breadcrumb-item.current::before { background: var(--accent); }
-    #questionView { display: grid; gap: 32px; }
+    #questionView { display: grid; gap: 40px; }
     .branch-node {
       position: relative;
       display: grid;
@@ -132,11 +132,11 @@
     .branch-node:not(:first-child)::before {
       content: "";
       position: absolute;
-      top: -32px;
+      top: -40px;
       left: 50%;
       transform: translateX(-50%);
       width: 2px;
-      height: 32px;
+      height: 40px;
       background: var(--flow);
     }
     .node-card {
@@ -155,20 +155,22 @@
       width: 2px;
       height: var(--connector-height);
       background: var(--flow);
-      margin-top: calc(var(--connector-height) * -0.65);
-      margin-bottom: calc(var(--connector-height) * -0.4);
+      margin-top: calc(var(--connector-height) * -0.72);
+      margin-bottom: calc(var(--connector-height) * -0.36);
     }
+    .flow-spine::before,
     .flow-spine::after {
       content: "";
       position: absolute;
       left: 50%;
-      bottom: -6px;
       transform: translateX(-50%);
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: var(--flow);
     }
+    .flow-spine::before { top: -8px; }
+    .flow-spine::after { bottom: -8px; }
     .option-row-wrap {
       position: relative;
       width: 100%;
@@ -180,19 +182,19 @@
       content: "";
       position: absolute;
       top: 0;
-      left: 6%;
-      right: 6%;
+      left: 4%;
+      right: 4%;
       border-top: 3px solid var(--flow);
       border-radius: 999px;
     }
     .option-row-wrap::after {
       content: "";
       position: absolute;
-      top: calc(var(--branch-drop) * -1 + 4px);
+      top: calc((var(--branch-drop) - 10px) * -1);
       left: 50%;
       transform: translateX(-50%);
       width: 2px;
-      height: calc(var(--branch-drop) - 4px);
+      height: calc(var(--branch-drop) - 10px);
       background: var(--flow);
     }
     .option-stack {
@@ -208,6 +210,7 @@
       justify-content: space-between;
       gap: 10px;
       width: min(980px, 100%);
+      align-items: stretch;
     }
     .option-button {
       min-height: 58px;
@@ -222,17 +225,28 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 2px;
+      gap: 4px;
       position: relative;
     }
     .option-button::before {
       content: "";
       position: absolute;
       left: 50%;
-      top: calc((var(--branch-drop) - 2px) * -1);
+      top: calc((var(--branch-drop) - 6px) * -1);
       transform: translateX(-50%);
       width: 2px;
-      height: calc(var(--branch-drop) - 2px);
+      height: calc(var(--branch-drop) - 6px);
+      background: var(--flow);
+    }
+    .option-button::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: calc(var(--branch-drop) * -1 - 4px);
+      transform: translateX(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
       background: var(--flow);
     }
     .option-button:hover { transform: translateY(-1px); }
@@ -243,11 +257,12 @@
       min-width: 0;
       width: 23.2%;
       max-width: none;
-      white-space: nowrap;
+      white-space: normal;
+      min-height: 92px;
       padding-inline: 12px;
     }
-    .option-label { font-weight: 700; }
-    .option-sub { font-size: .8rem; color: var(--muted); white-space: normal; }
+    .option-label { font-weight: 700; line-height: 1.2; }
+    .option-sub { font-size: .8rem; color: var(--muted); white-space: normal; line-height: 1.2; }
     .card-column .panel { position: sticky; top: 24px; }
     #cardView.hidden { display: none; }
     #cardView { display: grid; gap: 16px; }
@@ -343,7 +358,7 @@
       .layout { grid-template-columns: 1fr; }
       .sticky, .card-column .panel { position: static; }
       .option-stack.top-level { flex-wrap: wrap; }
-      .option-button.regular { width: auto; min-width: 235px; white-space: normal; }
+      .option-button.regular { width: auto; min-width: 235px; }
     }
   </style>
 </head>
@@ -406,21 +421,13 @@
           title: 'Tájékozódom',
           description: 'Ez az út azoknak szól, akik még nem tudják pontosan, mit keresnek, és először tájékozódni vagy szűkíteni szeretnének.',
           sections: [
-            {
-              heading: 'Haladj tovább',
-              variant: 'route',
-              items: [
-                { label: 'Olvasótermi válogatott könyvek' },
-                { label: 'Tárgyszavas keresés a katalógusban' },
-                { label: 'Folyóiratok böngészése' },
-                { label: 'Külső inspirációs források' }
-              ]
-            },
-            {
-              heading: 'További ajánlott források',
-              variant: 'boxed',
-              items: ['Olvasóterem', 'Katalógus tárgyszavas keresés', 'Külső inspirációs források']
-            }
+            { heading: 'Haladj tovább', variant: 'route', items: [
+              { label: 'Olvasótermi válogatott könyvek' },
+              { label: 'Tárgyszavas keresés a katalógusban' },
+              { label: 'Folyóiratok böngészése' },
+              { label: 'Külső inspirációs források' }
+            ]},
+            { heading: 'További ajánlott források', variant: 'boxed', items: ['Olvasóterem', 'Katalógus tárgyszavas keresés', 'Külső inspirációs források'] }
           ]
         },
         visual_flow: {
@@ -428,21 +435,13 @@
           title: 'Vizuális forrásokat keresek',
           description: 'Digitális képi és multimédiás források keresése múzeumi, egyetemi és egyéb online gyűjteményekben.',
           sections: [
-            {
-              heading: 'Haladj tovább',
-              variant: 'route',
-              items: [
-                { label: 'Múzeumi digitális gyűjteményekben nézek körül' },
-                { label: 'Egyetemi digitális gyűjteményekben keresek' },
-                { label: 'Képarchívumokat keresek' },
-                { label: 'Multimédiás gyűjteményeket keresek' }
-              ]
-            },
-            {
-              heading: 'Segítség',
-              variant: 'help',
-              items: ['Hogyan hivatkozzak képekre?', 'Hogyan hivatkozzak online forrásokra?']
-            }
+            { heading: 'Haladj tovább', variant: 'route', items: [
+              { label: 'Múzeumi digitális gyűjteményekben nézek körül' },
+              { label: 'Egyetemi digitális gyűjteményekben keresek' },
+              { label: 'Képarchívumokat keresek' },
+              { label: 'Multimédiás gyűjteményeket keresek' }
+            ]},
+            { heading: 'Segítség', variant: 'help', items: ['Hogyan hivatkozzak képekre?', 'Hogyan hivatkozzak online forrásokra?'] }
           ]
         },
         mome_flow: {
@@ -450,21 +449,13 @@
           title: 'MOME-s tartalmat keresek',
           description: 'A MOME-hoz kötődő diplomamunkák, doktori művek és más intézményi források külön kutatási csoportot alkotnak.',
           sections: [
-            {
-              heading: 'Haladj tovább',
-              variant: 'route',
-              items: [
-                { label: 'Diplomamunkát keresek' },
-                { label: 'Doktori művet keresek' },
-                { label: 'Egyetemtörténeti forrást keresek' },
-                { label: 'Levéltári forrást keresek' }
-              ]
-            },
-            {
-              heading: 'További ajánlott források',
-              variant: 'boxed',
-              items: ['MOME READ', 'Bibliográfiai rekordok', 'Nyilvános tartalmak']
-            }
+            { heading: 'Haladj tovább', variant: 'route', items: [
+              { label: 'Diplomamunkát keresek' },
+              { label: 'Doktori művet keresek' },
+              { label: 'Egyetemtörténeti forrást keresek' },
+              { label: 'Levéltári forrást keresek' }
+            ]},
+            { heading: 'További ajánlott források', variant: 'boxed', items: ['MOME READ', 'Bibliográfiai rekordok', 'Nyilvános tartalmak'] }
           ]
         },
         print_books: {
@@ -472,25 +463,14 @@
           title: 'Katalógusban keresek',
           description: 'Nyomtatott könyvet keresek a katalógusban szerző, cím vagy tárgyszó alapján.',
           sections: [
-            {
-              heading: 'Haladj tovább',
-              variant: 'route',
-              items: [
-                {
-                  label: 'MOME katalógus',
-                  children: [
-                    'Mit jelent a jelzet?',
-                    'Mi a különbség a szabadpolcos, olvasótermi és raktári példány között?',
-                    'Hol találom meg fizikailag a könyvet?'
-                  ]
-                }
-              ]
-            },
-            {
-              heading: 'További ajánlott források',
-              variant: 'boxed',
-              items: ['MOME katalógus']
-            }
+            { heading: 'Haladj tovább', variant: 'route', items: [
+              { label: 'MOME katalógus', children: [
+                'Mit jelent a jelzet?',
+                'Mi a különbség a szabadpolcos, olvasótermi és raktári példány között?',
+                'Hol találom meg fizikailag a könyvet?'
+              ]}
+            ]},
+            { heading: 'További ajánlott források', variant: 'boxed', items: ['MOME katalógus'] }
           ]
         },
         interlibrary: {
@@ -498,21 +478,13 @@
           title: 'Nem találom, amit keresek',
           description: 'Ilyenkor a saját állományon túl keresek tovább, vagy segítséget kérek.',
           sections: [
-            {
-              heading: 'Haladj tovább',
-              variant: 'route',
-              items: [
-                { label: 'Könyvtárközi kölcsönzést kérek' },
-                { label: 'MOKKA-ban nézem meg' },
-                { label: 'WorldCatben nézem meg' },
-                { label: 'Segítséget kérek a könyvtártól' }
-              ]
-            },
-            {
-              heading: 'Segítség',
-              variant: 'help',
-              items: ['Ha nem világos, merre érdemes továbblépni, a könyvtár segít eligazodni.']
-            }
+            { heading: 'Haladj tovább', variant: 'route', items: [
+              { label: 'Könyvtárközi kölcsönzést kérek' },
+              { label: 'MOKKA-ban nézem meg' },
+              { label: 'WorldCatben nézem meg' },
+              { label: 'Segítséget kérek a könyvtártól' }
+            ]},
+            { heading: 'Segítség', variant: 'help', items: ['Ha nem világos, merre érdemes továbblépni, a könyvtár segít eligazodni.'] }
           ]
         }
       }
@@ -520,9 +492,7 @@
 
     let selectedPath = { 0: guideData.startNode };
 
-    function getNode(nodeId) {
-      return guideData.nodes[nodeId] || null;
-    }
+    function getNode(nodeId) { return guideData.nodes[nodeId] || null; }
 
     function buildVisiblePath() {
       const visible = [];
@@ -550,10 +520,7 @@
       renderGuide();
     }
 
-    function goHome() {
-      selectedPath = { 0: guideData.startNode };
-      renderGuide();
-    }
+    function goHome() { selectedPath = { 0: guideData.startNode }; renderGuide(); }
 
     function goBack() {
       const levels = Object.keys(selectedPath).map(Number).sort((a,b) => a - b);
