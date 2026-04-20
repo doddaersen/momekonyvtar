@@ -104,6 +104,9 @@ function createNodeBlock(entry) {
 
   const optionList = document.createElement('div');
   optionList.className = 'option-stack';
+  if (entry.node.layout === 'compact-inline') {
+    optionList.classList.add('compact-inline');
+  }
 
   const nextActiveId = selectedPath[entry.depth + 1];
   const selectedSet = new Set(multiSelections[entry.id] || []);
@@ -174,6 +177,7 @@ function renderCards(cardIds) {
 
     const card = document.createElement('article');
     card.className = 'info-card';
+    card.dataset.cardId = cardId;
 
     const title = document.createElement('h2');
     title.className = 'info-card-title';
@@ -190,6 +194,7 @@ function renderCards(cardIds) {
     (node.sections || []).forEach(section => {
       const sectionWrap = document.createElement('section');
       sectionWrap.className = 'card-section';
+      if (section.variant === 'help') sectionWrap.classList.add('help-box');
 
       const heading = document.createElement('h3');
       heading.innerText = section.heading;
