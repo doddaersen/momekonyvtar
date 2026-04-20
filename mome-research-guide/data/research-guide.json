@@ -2,34 +2,35 @@
   "startNode": "start",
   "nodes": {
     "start": {
-      "type": "question",
-      "title": "Milyen kutatási helyzetben vagy?",
-      "description": "A guide kérdésekkel és rövid útmutatókkal segít megtalálni a megfelelő forrásokat.",
+      "type": "single",
+      "title": "Kutatási helyzet",
+      "description": "Válaszd ki, milyen helyzetből indulsz.",
       "options": [
-        {"label": "Szakirodalmat keresek egy konkrét témához", "target": "literature"},
+        {"label": "Szakirodalmat keresek", "target": "source_types"},
         {"label": "Inspirációt vagy példákat keresek", "target": "inspiration"},
         {"label": "MOME tartalmakat keresek", "target": "mome_content"}
       ]
     },
-    "literature": {
-      "type": "question",
-      "title": "Milyen típusú forrást keresel?",
-      "description": "Válaszd ki azt a forrástípust, amellyel most dolgoznál.",
+    "source_types": {
+      "type": "multi",
+      "title": "Forrástípus",
+      "description": "Több típust is kijelölhetsz egyszerre.",
       "options": [
-        {"label": "Nyomtatott könyvek", "target": "print_books"},
-        {"label": "E-könyvek", "target": "ebooks"},
-        {"label": "Online folyóiratcikkek", "target": "article_databases"},
-        {"label": "Nyomtatott magyar nyelvű folyóiratok", "target": "hungarian_print_journals"},
-        {"label": "Vizuális források adatbázisai", "target": "visual_sources"}
+        {"label": "Nyomtatott könyv", "target": "print_books"},
+        {"label": "E-könyv", "target": "ebooks"},
+        {"label": "Online folyóiratcikk", "target": "article_databases"},
+        {"label": "Nyomtatott folyóirat", "target": "hungarian_print_journals"},
+        {"label": "Vizuális forrás", "target": "visual_sources"},
+        {"label": "MOME tartalom", "target": "mome_content"}
       ]
     },
     "print_books": {
-      "type": "question",
+      "type": "multi",
       "title": "Nyomtatott könyvek",
-      "description": "Döntsd el, hogy a MOME saját állományában keresel, vagy külső forrásból indulnál.",
+      "description": "Jelöld ki, milyen körben keresnél.",
       "options": [
         {"label": "MOME Könyvtár", "target": "card_print_books_mome"},
-        {"label": "Ha nincs meg a könyv", "target": "card_print_books_external"}
+        {"label": "Külső forrás / könyvtárközi", "target": "card_print_books_external"}
       ]
     },
     "ebooks": {
