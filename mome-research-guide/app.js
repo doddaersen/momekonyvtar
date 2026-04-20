@@ -162,6 +162,27 @@ function gatherCards(visiblePath) {
   return [...new Set(cards)];
 }
 
+function appendSectionItem(list, item) {
+  const li = document.createElement('li');
+
+  if (typeof item === 'string') {
+    li.innerText = item;
+  } else if (item && typeof item === 'object') {
+    if (item.url) {
+      const a = document.createElement('a');
+      a.href = item.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.innerText = item.label || item.url;
+      li.appendChild(a);
+    } else {
+      li.innerText = item.label || '';
+    }
+  }
+
+  list.appendChild(li);
+}
+
 function renderCards(cardIds) {
   const cardView = document.getElementById('cardView');
   cardView.innerHTML = '';
@@ -194,6 +215,7 @@ function renderCards(cardIds) {
     (node.sections || []).forEach(section => {
       const sectionWrap = document.createElement('section');
       sectionWrap.className = 'card-section';
+      if (section.variant === 'boxed') sectionWrap.classList.add('boxed');
       if (section.variant === 'help') sectionWrap.classList.add('help-box');
 
       const heading = document.createElement('h3');
@@ -201,11 +223,7 @@ function renderCards(cardIds) {
       sectionWrap.appendChild(heading);
 
       const list = document.createElement('ul');
-      (section.items || []).forEach(item => {
-        const li = document.createElement('li');
-        li.innerText = item;
-        list.appendChild(li);
-      });
+      (section.items || []).forEach(item => appendSectionItem(list, item));
 
       sectionWrap.appendChild(list);
       card.appendChild(sectionWrap);
