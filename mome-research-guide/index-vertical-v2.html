@@ -18,6 +18,8 @@
       --shadow: 0 8px 18px rgba(0,0,0,.045);
       --radius: 22px;
       --pill-radius: 18px;
+      --connector-height: 58px;
+      --branch-drop: 46px;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -119,22 +121,22 @@
     }
     .breadcrumb-item.current { color: var(--text); font-weight: 600; }
     .breadcrumb-item.current::before { background: var(--accent); }
-    #questionView { display: grid; gap: 22px; }
+    #questionView { display: grid; gap: 32px; }
     .branch-node {
       position: relative;
       display: grid;
       justify-items: center;
-      gap: 14px;
+      gap: var(--connector-height);
       padding-top: 8px;
     }
     .branch-node:not(:first-child)::before {
       content: "";
       position: absolute;
-      top: -22px;
+      top: -32px;
       left: 50%;
       transform: translateX(-50%);
       width: 2px;
-      height: 22px;
+      height: 32px;
       background: var(--flow);
     }
     .node-card {
@@ -148,11 +150,29 @@
     }
     .node-title { font-size: 1rem; margin: 0 0 8px; font-weight: 700; }
     .node-description { margin: 0; color: var(--muted); }
-    .flow-spine { width: 2px; height: 16px; background: var(--flow); }
+    .flow-spine {
+      position: relative;
+      width: 2px;
+      height: var(--connector-height);
+      background: var(--flow);
+      margin-top: calc(var(--connector-height) * -0.65);
+      margin-bottom: calc(var(--connector-height) * -0.4);
+    }
+    .flow-spine::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -6px;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--flow);
+    }
     .option-row-wrap {
       position: relative;
       width: 100%;
-      padding-top: 16px;
+      padding-top: var(--branch-drop);
       display: flex;
       justify-content: center;
     }
@@ -160,15 +180,33 @@
       content: "";
       position: absolute;
       top: 0;
-      left: 10%;
-      right: 10%;
+      left: 6%;
+      right: 6%;
       border-top: 3px solid var(--flow);
+      border-radius: 999px;
+    }
+    .option-row-wrap::after {
+      content: "";
+      position: absolute;
+      top: calc(var(--branch-drop) * -1 + 4px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: calc(var(--branch-drop) - 4px);
+      background: var(--flow);
     }
     .option-stack {
       display: flex;
       flex-wrap: wrap;
       gap: 14px;
       justify-content: center;
+      width: min(980px, 100%);
+      position: relative;
+    }
+    .option-stack.top-level {
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      gap: 10px;
       width: min(980px, 100%);
     }
     .option-button {
@@ -185,14 +223,31 @@
       justify-content: center;
       text-align: center;
       gap: 2px;
+      position: relative;
+    }
+    .option-button::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: calc((var(--branch-drop) - 2px) * -1);
+      transform: translateX(-50%);
+      width: 2px;
+      height: calc(var(--branch-drop) - 2px);
+      background: var(--flow);
     }
     .option-button:hover { transform: translateY(-1px); }
     .option-button.is-selected { background: var(--accent-soft); border-color: #94b117; }
     .option-button.is-faded { opacity: .45; }
     .option-button.compact { min-width: 165px; }
-    .option-button.regular { min-width: 235px; max-width: 300px; }
+    .option-button.regular {
+      min-width: 0;
+      width: 23.2%;
+      max-width: none;
+      white-space: nowrap;
+      padding-inline: 12px;
+    }
     .option-label { font-weight: 700; }
-    .option-sub { font-size: .8rem; color: var(--muted); }
+    .option-sub { font-size: .8rem; color: var(--muted); white-space: normal; }
     .card-column .panel { position: sticky; top: 24px; }
     #cardView.hidden { display: none; }
     #cardView { display: grid; gap: 16px; }
@@ -287,6 +342,8 @@
     @media (max-width: 1180px) {
       .layout { grid-template-columns: 1fr; }
       .sticky, .card-column .panel { position: static; }
+      .option-stack.top-level { flex-wrap: wrap; }
+      .option-button.regular { width: auto; min-width: 235px; white-space: normal; }
     }
   </style>
 </head>
@@ -533,7 +590,7 @@
         const rowWrap = document.createElement('div');
         rowWrap.className = 'option-row-wrap';
         const row = document.createElement('div');
-        row.className = 'option-stack';
+        row.className = 'option-stack' + (entry.depth === 0 ? ' top-level' : '');
 
         const nextActiveId = selectedPath[entry.depth + 1];
         const hasAnySelected = !!nextActiveId;
