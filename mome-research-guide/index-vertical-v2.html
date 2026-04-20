@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOME Könyvtár – Research Guide prototípus / vertical v2</title>
+  <style>
+    :root {
+      --bg: #f3f3f0;
+      --surface: #ffffff;
+      --surface-muted: #fafaf7;
+      --text: #111111;
+      --muted: #6b6b6b;
+      --line: #d8d8d2;
+      --flow: #b96a57;
+      --accent: #c2d74c;
+      --accent-soft: #edf3cf;
+      --shadow: 0 8px 18px rgba(0,0,0,.045);
+      --radius: 22px;
+      --pill-radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+    }
+    .topbar {
+      background: #111;
+      color: #fff;
+      padding: 18px 24px 20px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .brand {
+      font-size: .95rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+    .subtitle {
+      margin-top: 4px;
+      font-size: .86rem;
+      color: rgba(255,255,255,.72);
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr) 380px;
+      gap: 24px;
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 28px 24px 56px;
+      align-items: start;
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+    .sticky { position: sticky; top: 24px; }
+    .hero-panel { border-top: 4px solid var(--accent); }
+    .eyebrow {
+      margin: 0 0 10px;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+    }
+    h1 { margin: 0 0 10px; font-size: clamp(1.75rem, 2.5vw, 2.5rem); line-height: 1.12; }
+    h2 { margin: 0 0 12px; font-size: 1rem; }
+    h3 { margin: 0 0 10px; font-size: 1rem; }
+    .lead { margin: 0; max-width: 64ch; color: var(--muted); }
+    button {
+      appearance: none;
+      font: inherit;
+      cursor: pointer;
+      transition: background-color .15s ease, transform .15s ease, opacity .15s ease, border-color .15s ease;
+    }
+    .ghost-button {
+      width: 100%;
+      margin-top: 10px;
+      text-align: left;
+      border: 1px solid #111;
+      border-radius: 999px;
+      background: #fff;
+      color: #111;
+      padding: 11px 16px;
+    }
+    .ghost-button:hover { background: var(--accent); }
+    .ghost-button:disabled { opacity: .4; cursor: default; }
+    .breadcrumb {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .breadcrumb-item {
+      display: block;
+      font-size: .9rem;
+      color: var(--muted);
+      padding-left: 14px;
+      position: relative;
+    }
+    .breadcrumb-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .55em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--line);
+    }
+    .breadcrumb-item.current { color: var(--text); font-weight: 600; }
+    .breadcrumb-item.current::before { background: var(--accent); }
+    #questionView { display: grid; gap: 22px; }
+    .branch-node {
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 14px;
+      padding-top: 8px;
+    }
+    .branch-node:not(:first-child)::before {
+      content: "";
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 22px;
+      background: var(--flow);
+    }
+    .node-card {
+      width: min(760px, 100%);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .node-title { font-size: 1rem; margin: 0 0 8px; font-weight: 700; }
+    .node-description { margin: 0; color: var(--muted); }
+    .flow-spine { width: 2px; height: 16px; background: var(--flow); }
+    .option-row-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 16px;
+      display: flex;
+      justify-content: center;
+    }
+    .option-row-wrap::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      border-top: 3px solid var(--flow);
+    }
+    .option-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      width: min(980px, 100%);
+    }
+    .option-button {
+      min-height: 58px;
+      padding: 12px 16px;
+      border-radius: var(--pill-radius);
+      border: 2px solid #111;
+      background: #fff;
+      color: #111;
+      box-shadow: var(--shadow);
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 2px;
+    }
+    .option-button:hover { transform: translateY(-1px); }
+    .option-button.is-selected { background: var(--accent-soft); border-color: #94b117; }
+    .option-button.is-faded { opacity: .45; }
+    .option-button.compact { min-width: 165px; }
+    .option-button.regular { min-width: 235px; max-width: 300px; }
+    .option-label { font-weight: 700; }
+    .option-sub { font-size: .8rem; color: var(--muted); }
+    .card-column .panel { position: sticky; top: 24px; }
+    #cardView.hidden { display: none; }
+    #cardView { display: grid; gap: 16px; }
+    .card-bundle { display: grid; gap: 16px; }
+    .info-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      background: var(--surface);
+    }
+    .info-card-title { margin: 0 0 10px; font-size: 1.2rem; }
+    .info-card-description { margin: 0 0 16px; color: var(--muted); }
+    .card-section { margin-top: 16px; }
+    .card-section.route-box {
+      padding: 14px 16px;
+      border: 2px solid #94b117;
+      border-radius: 18px;
+      background: #fff;
+    }
+    .card-section.boxed {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--surface-muted);
+    }
+    .card-section.help-box {
+      padding: 16px;
+      border: 1px solid #cddd8a;
+      border-radius: 18px;
+      background: var(--accent-soft);
+    }
+    .card-section ul { margin: 0; padding-left: 18px; }
+    .card-section li + li { margin-top: 8px; }
+    .route-list, .route-children { list-style: none; padding-left: 0; }
+    .route-item + .route-item { margin-top: 14px; }
+    .route-item > span,
+    .route-item > a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: #111;
+      background: #cfe164;
+      border: 1px solid #94b117;
+      border-radius: 999px;
+      padding: 8px 12px;
+      text-decoration: none;
+    }
+    .route-item > span::before,
+    .route-item > a::before {
+      content: "→";
+      color: #577000;
+      font-weight: 700;
+    }
+    .route-helper-box {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border: 1px solid #d8e1b1;
+      border-radius: 16px;
+      background: rgba(237,243,207,.72);
+    }
+    .route-helper-head {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .route-helper-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid #a8b67a;
+      font-size: .75rem;
+    }
+    .route-child-item {
+      position: relative;
+      padding-left: 16px;
+      color: var(--muted);
+    }
+    .route-child-item::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #7d9530;
+    }
+    @media (max-width: 1180px) {
+      .layout { grid-template-columns: 1fr; }
+      .sticky, .card-column .panel { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">MOME Könyvtár</div>
+    <div class="subtitle">Research Guide prototípus – első személyű, lefelé szétnyíló logika</div>
+  </div>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="panel sticky">
+        <h2>Útvonal</h2>
+        <nav id="breadcrumb" class="breadcrumb"></nav>
+        <button id="backButton" class="ghost-button" type="button">Vissza</button>
+        <button id="homeButton" class="ghost-button" type="button">Kezdőlap</button>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="panel hero-panel">
+        <p class="eyebrow">Prototípus</p>
+        <h1 id="screenTitle">MOME Research Guide</h1>
+        <p id="screenDescription" class="lead">A guide kérdésekkel és lefelé szétnyíló döntési logikával segít megtalálni a megfelelő forrásokat.</p>
+      </div>
+      <div id="questionView"></div>
+    </section>
+
+    <aside class="card-column">
+      <div id="cardView" class="panel hidden"></div>
+    </aside>
+  </main>
+
+  <script>
+    const guideData = {
+      startNode: 'start',
+      nodes: {
+        start: {
+          type: 'single',
+          title: 'Milyen kutatási helyzetben vagyok?',
+          description: 'Azt választom ki, milyen helyzetből indulok most.',
+          options: [
+            { label: 'Célzott szakirodalmat keresek', sub: 'tudom, mit keresek', target: 'print_flow' },
+            { label: 'Tájékozódom', sub: 'még nem tudom pontosan, mit keresek', target: 'explore_flow' },
+            { label: 'Vizuális tartalmat vagy példákat keresek', sub: 'képek, gyűjtemények, precedensek', target: 'visual_flow' },
+            { label: 'MOME-s tartalmat keresek', sub: 'diploma, doktori, levéltár', target: 'mome_flow' }
+          ]
+        },
+        print_flow: {
+          type: 'single',
+          title: 'Nyomtatott könyvet keresek',
+          description: 'Innen egy konkrét könyv vagy témakör felé indulok tovább.',
+          options: [
+            { label: 'Katalógusban keresek', sub: 'szerző, cím, tárgyszó alapján', target: 'print_books' },
+            { label: 'Nem találom, amit keresek', sub: 'továbblépek más megoldás felé', target: 'interlibrary' }
+          ]
+        },
+        explore_flow: {
+          type: 'card',
+          title: 'Tájékozódom',
+          description: 'Ez az út azoknak szól, akik még nem tudják pontosan, mit keresnek, és először tájékozódni vagy szűkíteni szeretnének.',
+          sections: [
+            {
+              heading: 'Haladj tovább',
+              variant: 'route',
+              items: [
+                { label: 'Olvasótermi válogatott könyvek' },
+                { label: 'Tárgyszavas keresés a katalógusban' },
+                { label: 'Folyóiratok böngészése' },
+                { label: 'Külső inspirációs források' }
+              ]
+            },
+            {
+              heading: 'További ajánlott források',
+              variant: 'boxed',
+              items: ['Olvasóterem', 'Katalógus tárgyszavas keresés', 'Külső inspirációs források']
+            }
+          ]
+        },
+        visual_flow: {
+          type: 'card',
+          title: 'Vizuális forrásokat keresek',
+          description: 'Digitális képi és multimédiás források keresése múzeumi, egyetemi és egyéb online gyűjteményekben.',
+          sections: [
+            {
+              heading: 'Haladj tovább',
+              variant: 'route',
+              items: [
+                { label: 'Múzeumi digitális gyűjteményekben nézek körül' },
+                { label: 'Egyetemi digitális gyűjteményekben keresek' },
+                { label: 'Képarchívumokat keresek' },
+                { label: 'Multimédiás gyűjteményeket keresek' }
+              ]
+            },
+            {
+              heading: 'Segítség',
+              variant: 'help',
+              items: ['Hogyan hivatkozzak képekre?', 'Hogyan hivatkozzak online forrásokra?']
+            }
+          ]
+        },
+        mome_flow: {
+          type: 'card',
+          title: 'MOME-s tartalmat keresek',
+          description: 'A MOME-hoz kötődő diplomamunkák, doktori művek és más intézményi források külön kutatási csoportot alkotnak.',
+          sections: [
+            {
+              heading: 'Haladj tovább',
+              variant: 'route',
+              items: [
+                { label: 'Diplomamunkát keresek' },
+                { label: 'Doktori művet keresek' },
+                { label: 'Egyetemtörténeti forrást keresek' },
+                { label: 'Levéltári forrást keresek' }
+              ]
+            },
+            {
+              heading: 'További ajánlott források',
+              variant: 'boxed',
+              items: ['MOME READ', 'Bibliográfiai rekordok', 'Nyilvános tartalmak']
+            }
+          ]
+        },
+        print_books: {
+          type: 'card',
+          title: 'Katalógusban keresek',
+          description: 'Nyomtatott könyvet keresek a katalógusban szerző, cím vagy tárgyszó alapján.',
+          sections: [
+            {
+              heading: 'Haladj tovább',
+              variant: 'route',
+              items: [
+                {
+                  label: 'MOME katalógus',
+                  children: [
+                    'Mit jelent a jelzet?',
+                    'Mi a különbség a szabadpolcos, olvasótermi és raktári példány között?',
+                    'Hol találom meg fizikailag a könyvet?'
+                  ]
+                }
+              ]
+            },
+            {
+              heading: 'További ajánlott források',
+              variant: 'boxed',
+              items: ['MOME katalógus']
+            }
+          ]
+        },
+        interlibrary: {
+          type: 'card',
+          title: 'Nem találom, amit keresek',
+          description: 'Ilyenkor a saját állományon túl keresek tovább, vagy segítséget kérek.',
+          sections: [
+            {
+              heading: 'Haladj tovább',
+              variant: 'route',
+              items: [
+                { label: 'Könyvtárközi kölcsönzést kérek' },
+                { label: 'MOKKA-ban nézem meg' },
+                { label: 'WorldCatben nézem meg' },
+                { label: 'Segítséget kérek a könyvtártól' }
+              ]
+            },
+            {
+              heading: 'Segítség',
+              variant: 'help',
+              items: ['Ha nem világos, merre érdemes továbblépni, a könyvtár segít eligazodni.']
+            }
+          ]
+        }
+      }
+    };
+
+    let selectedPath = { 0: guideData.startNode };
+
+    function getNode(nodeId) {
+      return guideData.nodes[nodeId] || null;
+    }
+
+    function buildVisiblePath() {
+      const visible = [];
+      let currentId = guideData.startNode;
+      let depth = 0;
+      while (currentId) {
+        const node = getNode(currentId);
+        if (!node) break;
+        visible.push({ id: currentId, depth, node });
+        if (node.type === 'single') {
+          const nextId = selectedPath[depth + 1];
+          if (!nextId) break;
+          currentId = nextId;
+          depth += 1;
+          continue;
+        }
+        break;
+      }
+      return visible;
+    }
+
+    function selectSingle(targetId, depth) {
+      selectedPath[depth + 1] = targetId;
+      Object.keys(selectedPath).map(Number).filter(key => key > depth + 1).forEach(key => delete selectedPath[key]);
+      renderGuide();
+    }
+
+    function goHome() {
+      selectedPath = { 0: guideData.startNode };
+      renderGuide();
+    }
+
+    function goBack() {
+      const levels = Object.keys(selectedPath).map(Number).sort((a,b) => a - b);
+      if (levels.length <= 1) return;
+      delete selectedPath[levels[levels.length - 1]];
+      renderGuide();
+    }
+
+    function renderBreadcrumb(visiblePath) {
+      const breadcrumb = document.getElementById('breadcrumb');
+      breadcrumb.innerHTML = '';
+      visiblePath.forEach((entry, index) => {
+        const item = document.createElement('span');
+        item.className = 'breadcrumb-item';
+        item.innerText = entry.node.title || entry.id;
+        if (index === visiblePath.length - 1) item.classList.add('current');
+        breadcrumb.appendChild(item);
+      });
+    }
+
+    function createNodeBlock(entry) {
+      const wrap = document.createElement('section');
+      wrap.className = 'branch-node';
+      const card = document.createElement('div');
+      card.className = 'node-card';
+      card.innerHTML = `<div class="node-title">${entry.node.title}</div>${entry.node.description ? `<p class="node-description">${entry.node.description}</p>` : ''}`;
+      wrap.appendChild(card);
+
+      if (entry.node.options && entry.node.options.length) {
+        const spine = document.createElement('div');
+        spine.className = 'flow-spine';
+        wrap.appendChild(spine);
+
+        const rowWrap = document.createElement('div');
+        rowWrap.className = 'option-row-wrap';
+        const row = document.createElement('div');
+        row.className = 'option-stack';
+
+        const nextActiveId = selectedPath[entry.depth + 1];
+        const hasAnySelected = !!nextActiveId;
+
+        entry.node.options.forEach(option => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'option-button ' + (entry.depth === 0 ? 'regular' : 'compact');
+          if (nextActiveId === option.target) button.classList.add('is-selected');
+          else if (hasAnySelected) button.classList.add('is-faded');
+          button.innerHTML = `<span class="option-label">${option.label}</span>${option.sub ? `<span class="option-sub">${option.sub}</span>` : ''}`;
+          button.onclick = () => selectSingle(option.target, entry.depth);
+          row.appendChild(button);
+        });
+
+        rowWrap.appendChild(row);
+        wrap.appendChild(rowWrap);
+      }
+      return wrap;
+    }
+
+    function gatherCards(visiblePath) {
+      const cards = [];
+      visiblePath.forEach((entry, index) => {
+        if (entry.node.type === 'card') cards.push(entry.id);
+        if (entry.node.type === 'single') {
+          const nextId = selectedPath[index + 1];
+          const nextNode = getNode(nextId);
+          if (nextNode && nextNode.type === 'card') cards.push(nextId);
+        }
+      });
+      return [...new Set(cards)];
+    }
+
+    function appendSectionItem(list, item, isRouteSection = false) {
+      const li = document.createElement('li');
+      if (isRouteSection) li.classList.add('route-item');
+      const addText = (target, text) => {
+        const span = document.createElement('span');
+        span.innerText = text;
+        target.appendChild(span);
+      };
+      if (typeof item === 'string') {
+        addText(li, item);
+      } else if (item && typeof item === 'object') {
+        addText(li, item.label || '');
+        if (Array.isArray(item.children) && item.children.length) {
+          const helperBox = document.createElement('div');
+          helperBox.className = 'route-helper-box';
+          const helperHead = document.createElement('div');
+          helperHead.className = 'route-helper-head';
+          helperHead.innerHTML = '<span class="route-helper-icon">i</span><span>Információ</span>';
+          helperBox.appendChild(helperHead);
+          const childList = document.createElement('ul');
+          childList.className = 'route-children';
+          item.children.forEach(child => {
+            const childLi = document.createElement('li');
+            childLi.className = 'route-child-item';
+            childLi.innerText = child;
+            childList.appendChild(childLi);
+          });
+          helperBox.appendChild(childList);
+          li.appendChild(helperBox);
+        }
+      }
+      list.appendChild(li);
+    }
+
+    function renderCards(cardIds) {
+      const cardView = document.getElementById('cardView');
+      cardView.innerHTML = '';
+      if (!cardIds.length) {
+        cardView.classList.add('hidden');
+        return;
+      }
+      const bundle = document.createElement('div');
+      bundle.className = 'card-bundle';
+      cardIds.forEach(cardId => {
+        const node = getNode(cardId);
+        if (!node) return;
+        const card = document.createElement('article');
+        card.className = 'info-card';
+        card.innerHTML = `<h2 class="info-card-title">${node.title}</h2>${node.description ? `<p class="info-card-description">${node.description}</p>` : ''}`;
+        (node.sections || []).forEach(section => {
+          const sectionWrap = document.createElement('section');
+          sectionWrap.className = 'card-section';
+          const isRouteSection = section.variant === 'route' || section.heading === 'Haladj tovább';
+          if (isRouteSection) sectionWrap.classList.add('route-box');
+          if (section.variant === 'boxed') sectionWrap.classList.add('boxed');
+          if (section.variant === 'help') sectionWrap.classList.add('help-box');
+          const heading = document.createElement('h3');
+          heading.innerText = section.heading;
+          sectionWrap.appendChild(heading);
+          const list = document.createElement('ul');
+          if (isRouteSection) list.classList.add('route-list');
+          (section.items || []).forEach(item => appendSectionItem(list, item, isRouteSection));
+          sectionWrap.appendChild(list);
+          card.appendChild(sectionWrap);
+        });
+        bundle.appendChild(card);
+      });
+      cardView.appendChild(bundle);
+      cardView.classList.remove('hidden');
+    }
+
+    function renderGuide() {
+      const treeView = document.getElementById('questionView');
+      const heroTitle = document.getElementById('screenTitle');
+      const heroDescription = document.getElementById('screenDescription');
+      const visiblePath = buildVisiblePath();
+      const current = visiblePath[visiblePath.length - 1];
+      heroTitle.innerText = current?.node?.title || 'MOME Research Guide';
+      heroDescription.innerText = current?.node?.description || 'A guide kérdésekkel és rövid útmutatókkal segít megtalálni a megfelelő forrásokat.';
+      treeView.innerHTML = '';
+      visiblePath.forEach(entry => {
+        if (entry.node.type === 'single') treeView.appendChild(createNodeBlock(entry));
+      });
+      renderBreadcrumb(visiblePath);
+      renderCards(gatherCards(visiblePath));
+      document.getElementById('backButton').disabled = visiblePath.length <= 1;
+    }
+
+    document.getElementById('backButton').onclick = goBack;
+    document.getElementById('homeButton').onclick = goHome;
+    renderGuide();
+  </script>
+</body>
+</html>
