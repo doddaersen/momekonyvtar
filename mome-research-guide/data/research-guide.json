@@ -31,11 +31,24 @@
       "sections": [
         {
           "heading": "Haladj tovább",
+          "variant": "route",
           "items": [
-            {"label": "MOME könyvtári katalógus"},
-            {"label": "MOKKA – magyar közös katalógus"},
-            {"label": "WebCat – külföldi katalógus"},
-            {"label": "Könyvtárközi kölcsönzés"}
+            {
+              "label": "MOME katalógus",
+              "children": [
+                "Mit jelent a jelzet?",
+                "Mi a különbség a szabadpolcos, olvasótermi és raktári példány között?",
+                "Hol találod meg fizikailag a könyvet?"
+              ]
+            },
+            {
+              "label": "Nem találod?",
+              "children": [
+                "Könyvtárközi kölcsönzés",
+                "Segítség kérése a könyvtártól",
+                "Keresés közös keresőkben: MOKKA, WorldCat"
+              ]
+            }
           ]
         },
         {
@@ -44,15 +57,7 @@
           "items": [
             "MOME katalógus",
             "MOKKA",
-            "WebCat"
-          ]
-        },
-        {
-          "heading": "Segítség",
-          "variant": "help",
-          "items": [
-            "Mit jelent a jelzet?",
-            "Mi a különbség a szabadpolcos, olvasótermi és raktári példány között?"
+            "WorldCat"
           ]
         }
       ]
@@ -64,6 +69,7 @@
       "sections": [
         {
           "heading": "Haladj tovább",
+          "variant": "route",
           "items": [
             {"label": "Közös katalógusban megjelenő digitális példányok"},
             {"label": "Adatbázisokból elérhető e-book gyűjtemények"}
@@ -94,6 +100,7 @@
       "sections": [
         {
           "heading": "Haladj tovább",
+          "variant": "route",
           "items": [
             {"label": "Nyomtatott → FI-nyilvántartás + MATARKA"},
             {"label": "Online → adatbázisok"}
@@ -126,6 +133,7 @@
       "sections": [
         {
           "heading": "Haladj tovább",
+          "variant": "route",
           "items": [
             {"label": "Múzeumi digitális gyűjtemények"},
             {"label": "Egyetemi digitális gyűjtemények"},
@@ -159,6 +167,7 @@
       "sections": [
         {
           "heading": "Haladj tovább",
+          "variant": "route",
           "items": [
             {"label": "Olvasótermi válogatott könyvek tematikus rendben"},
             {"label": "Tárgyszavas keresés a katalógusban"},
@@ -175,6 +184,7 @@
       "sections": [
         {
           "heading": "Haladj tovább",
+          "variant": "route",
           "items": [
             {"label": "Diplomamunkák – nyilvános tartalmak"},
             {"label": "Diplomamunkák – nem nyilvános tartalmak"},
