@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOME Research Guide – kattintható döntési protó</title>
+  <style>
+    :root {
+      --bg: #f3f3f0;
+      --surface: #ffffff;
+      --text: #111111;
+      --muted: #6b6b6b;
+      --line: #b96a57;
+      --accent: #c2d74c;
+      --accent-soft: #edf3cf;
+      --result: #6fb7a2;
+      --group: #6f95c6;
+      --shadow: 0 8px 18px rgba(0,0,0,.045);
+      --radius: 22px;
+      --pill-radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.45;
+    }
+    .wrap {
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+    .eyebrow {
+      margin: 0 0 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.06;
+    }
+    .lead {
+      max-width: 78ch;
+      margin: 0 0 24px;
+      color: var(--muted);
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 24px;
+      align-items: start;
+    }
+    .canvas {
+      background: transparent;
+      min-width: 0;
+    }
+    .lane {
+      position: relative;
+      margin-bottom: 28px;
+      padding-top: 16px;
+    }
+    .lane.hidden { display: none; }
+    .lane::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 16px;
+      background: var(--line);
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: stretch;
+      position: relative;
+      justify-content: center;
+    }
+    .row::before {
+      content: "";
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      top: -12px;
+      border-top: 3px solid var(--line);
+      opacity: .9;
+    }
+    .row.no-rail::before { display: none; }
+    .node, .choice {
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .node {
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px 18px 16px;
+      width: 260px;
+      min-height: 138px;
+      position: relative;
+    }
+    .node--start {
+      margin: 0 auto 26px;
+      width: 300px;
+      min-height: 112px;
+      background: var(--line);
+      color: #fff;
+    }
+    .node--start .node-sub { color: rgba(255,255,255,.85); }
+    .node--result {
+      border-color: var(--result);
+      min-height: 128px;
+    }
+    .node-title {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+    .node-sub {
+      margin: 8px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .choice {
+      border: 2px solid var(--line);
+      border-radius: var(--pill-radius);
+      min-height: 56px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 180px;
+      cursor: pointer;
+      transition: transform .15s ease, background-color .15s ease, border-color .15s ease, opacity .15s ease;
+    }
+    .choice:hover {
+      transform: translateY(-1px);
+    }
+    .choice.active {
+      background: var(--accent-soft);
+      border-color: #94b117;
+    }
+    .choice.dimmed {
+      opacity: .45;
+    }
+    .choice--group {
+      width: 280px;
+      border-color: var(--group);
+      background: #fff;
+    }
+    .choice--group.active {
+      background: #eef4fb;
+      border-color: var(--group);
+    }
+    .choice--small { width: 170px; }
+    .micro-block {
+      margin-top: 26px;
+      padding-top: 8px;
+      position: relative;
+    }
+    .micro-block::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 14px;
+      background: var(--line);
+    }
+    .micro-row {
+      display: flex;
+      gap: 22px;
+      align-items: start;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      margin-top: 16px;
+    }
+    .micro-row::before {
+      content: "";
+      position: absolute;
+      left: 20%;
+      right: 20%;
+      top: -10px;
+      border-top: 2px solid var(--line);
+      opacity: .6;
+    }
+    .note {
+      background: #fff;
+      border: 1.5px solid #d8e1b1;
+      border-radius: 18px;
+      padding: 14px;
+      color: #555;
+      font-size: 14px;
+      box-shadow: var(--shadow);
+      width: 320px;
+    }
+    .note-head {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid #a8b67a;
+      font-size: 12px;
+      line-height: 1;
+    }
+    .sidecard {
+      position: sticky;
+      top: 24px;
+      background: var(--surface);
+      border: 1px solid #d8d8d2;
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      min-height: 240px;
+    }
+    .sidecard h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      line-height: 1.15;
+    }
+    .sidecard p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .sidecard .section {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 18px;
+      background: #fafaf7;
+      border: 1px solid #e0e0da;
+    }
+    .sidecard .section.route {
+      background: #fff;
+      border: 2px solid #94b117;
+    }
+    .sidecard .section.help {
+      background: var(--accent-soft);
+      border: 1px solid #cddd8a;
+    }
+    .sidecard h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+    .sidecard ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 14px;
+    }
+    .sidecard li + li { margin-top: 6px; }
+    .sidecard .muted-note {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 18px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .legend-item { display: inline-flex; align-items: center; gap: 8px; }
+    .legend-swatch { width: 18px; height: 18px; border-radius: 6px; border: 2px solid var(--line); background: var(--surface); }
+    .legend-swatch.start { background: var(--line); }
+    .legend-swatch.result { border-color: var(--result); }
+    .legend-swatch.accent { border-color: #94b117; background: var(--accent-soft); }
+    .footnote { margin-top: 14px; font-size: 13px; color: var(--muted); max-width: 84ch; }
+    @media (max-width: 1180px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidecard { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">MOME Könyvtár / Research Guide</p>
+    <h1>Kattintható döntési protó</h1>
+    <p class="lead">Ez már kattintható változat, a v1 logikájához közelebb: először kutatási helyzetet választasz, utána az adott ág jelenik meg, és a jobb oldali információs kártya a kiválasztott ponthoz igazodik.</p>
+
+    <div class="layout">
+      <div class="canvas">
+        <div class="node node--start">
+          <p class="node-title">Milyen kutatási helyzetben vagy?</p>
+          <p class="node-sub">A teljes útvonal első döntési pontja.</p>
+        </div>
+
+        <div class="lane">
+          <div class="row" id="situationRow">
+            <button class="choice active" data-situation="targeted">Tudom, mit keresek</button>
+            <button class="choice" data-situation="explore">Tájékozódom</button>
+            <button class="choice" data-situation="visual">Vizuális tartalmat vagy példákat keresek</button>
+            <button class="choice" data-situation="mome">MOME tartalmat keresek</button>
+          </div>
+        </div>
+
+        <div class="lane" id="lane-targeted">
+          <div class="row">
+            <button class="choice choice--small active" data-card="print">Nyomtatott könyv</button>
+            <button class="choice choice--small" data-card="ebook">E-könyv</button>
+            <button class="choice" data-card="journal">Folyóirat / folyóiratcikk</button>
+            <button class="choice choice--small" data-card="visual-card">Vizuális forrás</button>
+            <button class="choice" data-card="mome-card">MOME tartalom</button>
+          </div>
+
+          <div class="micro-block" id="micro-print">
+            <div class="micro-row">
+              <button class="choice choice--small choice--group active" data-card="print">MOME katalógus</button>
+              <div class="note">
+                <div class="note-head"><span class="icon">i</span><span>Információ</span></div>
+                <div>Mit jelent a jelzet?</div>
+                <div>Mi a különbség a szabadpolcos, olvasótermi és raktári példány között?</div>
+                <div>Hol találod meg fizikailag a könyvet?</div>
+              </div>
+              <button class="choice choice--group" data-card="interlibrary">Nem találod? → könyvtárközi kölcsönzés</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lane hidden" id="lane-explore">
+          <div class="row no-rail">
+            <button class="choice choice--group active" data-card="explore-card">Olvasóterem / tárgyszó / folyóirat / inspirációs források</button>
+          </div>
+        </div>
+
+        <div class="lane hidden" id="lane-visual">
+          <div class="row no-rail">
+            <button class="choice choice--group active" data-card="visual-card">Múzeumi és egyetemi vizuális adatbázisok</button>
+          </div>
+        </div>
+
+        <div class="lane hidden" id="lane-mome">
+          <div class="row no-rail">
+            <button class="choice choice--group active" data-card="mome-card">Diploma / doktori / egyetemtörténet / levéltár</button>
+          </div>
+        </div>
+
+        <div class="legend">
+          <div class="legend-item"><span class="legend-swatch start"></span> induló döntési pont</div>
+          <div class="legend-item"><span class="legend-swatch accent"></span> aktív választás</div>
+          <div class="legend-item"><span class="legend-swatch result"></span> jobbra megnyíló információs kártya</div>
+        </div>
+
+        <p class="footnote">Ez már nem csak statikus ábra: a jobb oldali kártya kattintásra frissül. A következő körben ebből lehet teljes, többlépéses interaktív guide.</p>
+      </div>
+
+      <aside class="sidecard" id="sidecard">
+        <h2>Nyomtatott könyv kártya</h2>
+        <p>Nyomtatott könyvek keresése a MOME könyvtár saját állományában vagy külső forrásból.</p>
+        <div class="section route">
+          <h3>Haladj tovább</h3>
+          <ul>
+            <li>MOME katalógus</li>
+            <li>Nem találod? → könyvtárközi kölcsönzés</li>
+          </ul>
+        </div>
+        <div class="section">
+          <h3>További ajánlott források</h3>
+          <ul>
+            <li>MOME katalógus</li>
+          </ul>
+        </div>
+        <div class="section help">
+          <h3>Segítség</h3>
+          <div class="muted-note">A mikro-elágazás alatt jelennek meg a jelzetre, példánytípusokra és fizikai lelőhelyre vonatkozó segítségek.</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const cardData = {
+      print: {
+        title: 'Nyomtatott könyv kártya',
+        desc: 'Nyomtatott könyvek keresése a MOME könyvtár saját állományában vagy külső forrásból.',
+        route: ['MOME katalógus', 'Nem találod? → könyvtárközi kölcsönzés'],
+        recommended: ['MOME katalógus'],
+        help: 'A mikro-elágazás alatt jelennek meg a jelzetre, példánytípusokra és fizikai lelőhelyre vonatkozó segítségek.'
+      },
+      interlibrary: {
+        title: 'Könyvtárközi kölcsönzés',
+        desc: 'Akkor lép életbe, ha a keresett könyv nem érhető el a saját állományban.',
+        route: ['Könyvtárközi kölcsönzés indítása'],
+        recommended: ['MOKKA', 'WorldCat'],
+        help: 'Ezen a ponton jelenhet meg a további segítségkérés és a külső lelőhelyek logikája.'
+      },
+      ebook: {
+        title: 'E-könyv kártya',
+        desc: 'Katalógusban és adatbázisokban elérhető e-book tartalmak.',
+        route: ['Közös katalógus digitális példányai', 'Adatbázisok e-book gyűjteményei'],
+        recommended: ['Közös katalógus', 'E-book adatbázisok'],
+        help: 'Érdemes külön jelezni, hogyan kell e-könyvre hivatkozni.'
+      },
+      journal: {
+        title: 'Folyóirat / cikk kártya',
+        desc: 'Nyomtatott és online folyóiratos keresési utak.',
+        route: ['Nyomtatott → FI-nyilvántartás + MATARKA', 'Online → adatbázisok'],
+        recommended: ['FI-nyilvántartás', 'MATARKA', 'EBSCO', 'JSTOR'],
+        help: 'Külön kérdés, mikor folyóiratcímet és mikor cikket keres a hallgató.'
+      },
+      explore-card: {
+        title: 'Tájékozódó végpontok',
+        desc: 'Kurált belépési pontok azoknak, akik még csak irányokat keresnek.',
+        route: ['Olvasótermi válogatott könyvek', 'Tárgyszavas keresés', 'Folyóiratok böngészése', 'Külső inspirációs források'],
+        recommended: ['Olvasóterem', 'Katalógus tárgyszó', 'Zotero-alapú inspirációs lista'],
+        help: 'Ez az ág nem pontos tárgyra, hanem elindulási helyzetre reagál.'
+      },
+      visual-card: {
+        title: 'Vizuális forrás kártya',
+        desc: 'Múzeumi, egyetemi és egyéb vizuális gyűjtemények.',
+        route: ['Múzeumi digitális gyűjtemények', 'Egyetemi gyűjtemények', 'Képarchívumok'],
+        recommended: ['Open access vizuális források', 'Képarchívumok'],
+        help: 'Képek és online vizuális források hivatkozásához külön segítség szükséges.'
+      },
+      mome-card: {
+        title: 'MOME tartalom kártya',
+        desc: 'Diplomamunkák, doktori művek, egyetemtörténeti és levéltári tartalmak.',
+        route: ['Diplomamunkák', 'Doktori művek', 'Egyetemtörténet', 'Levéltár'],
+        recommended: ['MOME READ'],
+        help: 'Érdemes külön jelezni a nyilvános és a bibliográfiai rekordként megjelenő tartalmak közti különbséget.'
+      }
+    };
+
+    const sidecard = document.getElementById('sidecard');
+    const situationButtons = document.querySelectorAll('[data-situation]');
+    const lanes = {
+      targeted: document.getElementById('lane-targeted'),
+      explore: document.getElementById('lane-explore'),
+      visual: document.getElementById('lane-visual'),
+      mome: document.getElementById('lane-mome')
+    };
+
+    function renderCard(key) {
+      const data = cardData[key];
+      if (!data) return;
+      sidecard.innerHTML = `
+        <h2>${data.title}</h2>
+        <p>${data.desc}</p>
+        <div class="section route">
+          <h3>Haladj tovább</h3>
+          <ul>${data.route.map(item => `<li>${item}</li>`).join('')}</ul>
+        </div>
+        <div class="section">
+          <h3>További ajánlott források</h3>
+          <ul>${data.recommended.map(item => `<li>${item}</li>`).join('')}</ul>
+        </div>
+        <div class="section help">
+          <h3>Segítség</h3>
+          <div class="muted-note">${data.help}</div>
+        </div>
+      `;
+    }
+
+    function activateSituation(name) {
+      situationButtons.forEach(btn => {
+        const active = btn.dataset.situation === name;
+        btn.classList.toggle('active', active);
+        btn.classList.toggle('dimmed', !active);
+      });
+      Object.entries(lanes).forEach(([key, lane]) => {
+        lane.classList.toggle('hidden', key !== name);
+      });
+      if (name === 'targeted') renderCard('print');
+      if (name === 'explore') renderCard('explore-card');
+      if (name === 'visual') renderCard('visual-card');
+      if (name === 'mome') renderCard('mome-card');
+    }
+
+    situationButtons.forEach(btn => {
+      btn.addEventListener('click', () => activateSituation(btn.dataset.situation));
+    });
+
+    document.querySelectorAll('[data-card]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lane = btn.closest('.lane');
+        if (lane) {
+          lane.querySelectorAll('[data-card]').forEach(other => {
+            if (other.dataset.card === btn.dataset.card) {
+              other.classList.add('active');
+              other.classList.remove('dimmed');
+            } else if (other.hasAttribute('data-card')) {
+              other.classList.remove('active');
+              other.classList.add('dimmed');
+            }
+          });
+        }
+        btn.classList.add('active');
+        btn.classList.remove('dimmed');
+        renderCard(btn.dataset.card);
+      });
+    });
+  </script>
+</body>
+</html>
