@@ -11,13 +11,14 @@
       --text: #111111;
       --muted: #6b6b6b;
       --line: #b96a57;
-      --line-soft: #d8b2a7;
+      --line-soft: #d9b4aa;
       --accent: #c2d74c;
       --accent-soft: #edf3cf;
+      --result: #6fb7a2;
+      --group: #6f95c6;
       --shadow: 0 10px 24px rgba(0,0,0,.05);
       --radius: 18px;
     }
-
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -26,17 +27,11 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       line-height: 1.4;
     }
-
     .wrap {
-      max-width: 1500px;
+      max-width: 1540px;
       margin: 0 auto;
       padding: 28px 20px 60px;
     }
-
-    .top {
-      margin-bottom: 24px;
-    }
-
     .eyebrow {
       margin: 0 0 8px;
       font-size: 12px;
@@ -45,42 +40,33 @@
       color: var(--muted);
       font-weight: 700;
     }
-
     h1 {
       margin: 0 0 10px;
       font-size: clamp(28px, 4vw, 44px);
       line-height: 1.06;
     }
-
     .lead {
       max-width: 72ch;
-      margin: 0;
+      margin: 0 0 22px;
       color: var(--muted);
     }
-
     .board {
-      position: relative;
-      min-height: 1180px;
       overflow-x: auto;
-      padding: 20px 0 40px;
+      padding-bottom: 28px;
     }
-
     .canvas {
       position: relative;
-      width: 1380px;
-      height: 1120px;
+      width: 1460px;
+      height: 1640px;
       margin: 0 auto;
     }
-
     svg.lines {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      overflow: visible;
       pointer-events: none;
     }
-
     .node {
       position: absolute;
       background: var(--surface);
@@ -89,35 +75,24 @@
       box-shadow: var(--shadow);
       padding: 18px 18px 16px;
     }
-
     .node--start {
       background: var(--line);
       color: #fff;
     }
-
-    .node--group {
-      border-color: #6d98c9;
-    }
-
-    .node--result {
-      border-color: #70b8a6;
-    }
-
+    .node--group { border-color: var(--group); }
+    .node--result { border-color: var(--result); }
     .node-title {
       margin: 0;
       font-size: 15px;
       line-height: 1.25;
       font-weight: 700;
     }
-
     .node-sub {
       margin: 8px 0 0;
       font-size: 12px;
       color: var(--muted);
     }
-
-    .node--start .node-sub { color: rgba(255,255,255,.82); }
-
+    .node--start .node-sub { color: rgba(255,255,255,.85); }
     .badge {
       position: absolute;
       top: -22px;
@@ -128,23 +103,63 @@
       text-transform: uppercase;
       color: var(--line);
     }
-
-    .legend {
-      display: grid;
-      grid-template-columns: repeat(4, max-content);
-      gap: 14px 18px;
-      margin-top: 20px;
-      align-items: center;
+    .choice {
+      position: absolute;
+      background: #fff;
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 12px 16px;
+      box-shadow: var(--shadow);
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
     }
-
-    .legend-item {
+    .choice--accent {
+      border-color: #94b117;
+      background: var(--accent-soft);
+    }
+    .choice--group {
+      border-color: var(--group);
+    }
+    .panel-note {
+      position: absolute;
+      background: #fff;
+      border: 2px solid #d8e1b1;
+      border-radius: 16px;
+      padding: 14px;
+      color: #555;
+      font-size: 14px;
+      box-shadow: var(--shadow);
+    }
+    .panel-note .head {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 14px;
+      margin-bottom: 8px;
       color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
     }
-
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid #a8b67a;
+      font-size: 12px;
+      line-height: 1;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 18px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .legend-item { display: inline-flex; align-items: center; gap: 8px; }
     .legend-swatch {
       width: 18px;
       height: 18px;
@@ -152,142 +167,150 @@
       border: 2px solid var(--line);
       background: var(--surface);
     }
-
     .legend-swatch.start { background: var(--line); }
-    .legend-swatch.group { border-color: #6d98c9; }
-    .legend-swatch.result { border-color: #70b8a6; }
-    .legend-swatch.help { border-color: #9ab648; background: var(--accent-soft); }
-
+    .legend-swatch.group { border-color: var(--group); }
+    .legend-swatch.result { border-color: var(--result); }
+    .legend-swatch.accent { border-color: #94b117; background: var(--accent-soft); }
     .footnote {
-      margin-top: 16px;
+      margin-top: 14px;
       font-size: 13px;
       color: var(--muted);
-      max-width: 80ch;
-    }
-
-    @media (max-width: 1100px) {
-      .board { overflow-x: auto; }
+      max-width: 84ch;
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="top">
-      <p class="eyebrow">MOME Könyvtár / Research Guide</p>
-      <h1>Döntési váz – statikus prototípus</h1>
-      <p class="lead">Ez a nézet nem az interaktív működést helyettesíti, hanem annak szerkezeti vázát mutatja: kutatási helyzet → forrástípus → konkrét út → eredménykártyák.</p>
-    </div>
+    <p class="eyebrow">MOME Könyvtár / Research Guide</p>
+    <h1>Döntési váz – statikus prototípus</h1>
+    <p class="lead">A szerkezet most már függőleges haladást mutat: kutatási helyzet → ágak → forrástípusok mint külön gombok → konkrét utak → eredménykártyák. A cél itt kifejezetten a döntési struktúra láthatóvá tétele.</p>
 
     <div class="board">
       <div class="canvas">
-        <svg class="lines" viewBox="0 0 1380 1120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <svg class="lines" viewBox="0 0 1460 1640" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="#b96a57" />
             </marker>
           </defs>
 
-          <path d="M 240 160 L 430 160" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M 240 160 L 240 310 L 430 310" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M 240 160 L 240 475 L 430 475" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M 240 160 L 240 640 L 430 640" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <!-- start to first level -->
+          <path d="M730 150 L730 230" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M730 230 L190 230 L190 300" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M730 230 L560 230 L560 300" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M730 230 L900 230 L900 300" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M730 230 L1270 230 L1270 300" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
 
-          <path d="M 620 160 L 820 160" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M 620 310 L 820 310" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M 620 475 L 820 475" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M 620 640 L 820 640" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <!-- tudom mit keresek to source type buttons -->
+          <path d="M190 440 L190 520" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M190 520 L70 520 L70 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M190 520 L330 520 L330 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M190 520 L590 520 L590 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M190 520 L850 520 L850 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M190 520 L1110 520 L1110 600" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
 
-          <path d="M 1000 160 L 1190 160" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M 1000 310 L 1190 310" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M 1000 475 L 1190 475" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M 1000 640 L 1190 640" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <!-- source type buttons to result cards -->
+          <path d="M70 652 L70 760" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M330 652 L330 760" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M590 652 L590 760" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M850 652 L850 760" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M1110 652 L1110 760" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
 
-          <path d="M 910 220 L 910 270" stroke="#d8b2a7" stroke-width="2" fill="none"/>
-          <path d="M 910 370 L 910 435" stroke="#d8b2a7" stroke-width="2" fill="none"/>
+          <!-- inspiration branch -->
+          <path d="M560 440 L560 540" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M560 540 L560 620" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M560 700 L560 760" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+          <!-- visual branch -->
+          <path d="M900 440 L900 540" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M900 540 L900 620" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M900 700 L900 760" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+          <!-- mome branch -->
+          <path d="M1270 440 L1270 540" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M1270 540 L1270 620" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M1270 700 L1270 760" stroke="#b96a57" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+          <!-- print books micro example -->
+          <path d="M70 900 L70 980 L360 980" stroke="#d9b4aa" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+          <path d="M70 900 L70 1160 L800 1160" stroke="#d9b4aa" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
         </svg>
 
-        <div class="node node--start" style="left:60px; top:90px; width:180px; height:140px;">
-          <div class="badge">Start here</div>
+        <div class="node node--start" style="left:595px; top:40px; width:270px; height:110px;">
+          <div class="badge">Start</div>
           <p class="node-title">Milyen kutatási helyzetben vagy?</p>
-          <p class="node-sub">Első döntési pont</p>
+          <p class="node-sub">A teljes útvonal első döntési pontja</p>
         </div>
 
-        <div class="node" style="left:430px; top:90px; width:190px; height:140px;">
+        <div class="node" style="left:60px; top:300px; width:260px; height:140px;">
           <p class="node-title">Tudom, mit keresek</p>
-          <p class="node-sub">Szakirodalmi keresés</p>
+          <p class="node-sub">Itt a hallgató már szakirodalmat keres, tehát nem inspirációs, hanem célzott keresési helyzetből indul.</p>
         </div>
 
-        <div class="node" style="left:430px; top:240px; width:190px; height:140px;">
+        <div class="node" style="left:430px; top:300px; width:260px; height:140px;">
           <p class="node-title">Tájékozódom</p>
-          <p class="node-sub">Még nem tudom pontosan, mit keresek</p>
+          <p class="node-sub">Még nem tudom pontosan, mit keresek, inkább irányokat, témákat, belépési pontokat keresek.</p>
         </div>
 
-        <div class="node" style="left:430px; top:405px; width:190px; height:140px;">
+        <div class="node" style="left:770px; top:300px; width:260px; height:140px;">
           <p class="node-title">Vizuális tartalmat vagy példákat keresek</p>
+          <p class="node-sub">Képek, példák, gyűjtemények, vizuális precedensek.</p>
         </div>
 
-        <div class="node" style="left:430px; top:570px; width:190px; height:140px;">
+        <div class="node" style="left:1140px; top:300px; width:260px; height:140px;">
           <p class="node-title">MOME tartalmat keresek</p>
+          <p class="node-sub">Intézményi tartalmak, diplomamunkák, doktori művek, egyetemtörténeti és levéltári anyagok.</p>
         </div>
 
-        <div class="node node--group" style="left:820px; top:90px; width:180px; height:140px;">
-          <p class="node-title">Forrástípus</p>
-          <p class="node-sub">Nyomtatott könyv / E-könyv / Folyóirat / Vizuális / MOME</p>
+        <!-- separate source-type buttons -->
+        <div class="choice choice--accent" style="left:20px; top:600px; width:100px;">Nyomtatott könyv</div>
+        <div class="choice choice--accent" style="left:270px; top:600px; width:120px;">E-könyv</div>
+        <div class="choice choice--accent" style="left:500px; top:600px; width:180px;">Folyóirat / folyóiratcikk</div>
+        <div class="choice choice--accent" style="left:785px; top:600px; width:130px;">Vizuális forrás</div>
+        <div class="choice choice--accent" style="left:1050px; top:600px; width:120px;">MOME tartalom</div>
+
+        <!-- mid branch buttons -->
+        <div class="choice choice--group" style="left:430px; top:620px; width:260px;">Olvasóterem / tárgyszó / folyóirat / inspirációs források</div>
+        <div class="choice choice--group" style="left:780px; top:620px; width:240px;">Múzeumi és egyetemi vizuális adatbázisok</div>
+        <div class="choice choice--group" style="left:1140px; top:620px; width:260px;">Diploma / doktori / egyetemtörténet / levéltár</div>
+
+        <!-- result cards -->
+        <div class="node node--result" style="left:10px; top:760px; width:120px; height:140px;">
+          <p class="node-title">Nyomtatott könyv kártya</p>
+          <p class="node-sub">MOME katalógus + könyvtárközi logika</p>
+        </div>
+        <div class="node node--result" style="left:250px; top:760px; width:160px; height:140px;">
+          <p class="node-title">E-könyv kártya</p>
+          <p class="node-sub">Katalógus és e-book adatbázisok</p>
+        </div>
+        <div class="node node--result" style="left:500px; top:760px; width:180px; height:140px;">
+          <p class="node-title">Folyóirat / cikk kártya</p>
+          <p class="node-sub">FI-nyilvántartás, MATARKA, adatbázisok</p>
+        </div>
+        <div class="node node--result" style="left:430px; top:760px; width:260px; height:140px; opacity:0; pointer-events:none;"></div>
+        <div class="node node--result" style="left:770px; top:760px; width:260px; height:140px;">
+          <p class="node-title">Vizuális forrás kártya</p>
+          <p class="node-sub">Gyűjtemények + hivatkozási segítség</p>
+        </div>
+        <div class="node node--result" style="left:1140px; top:760px; width:260px; height:140px;">
+          <p class="node-title">MOME tartalom kártya</p>
+          <p class="node-sub">Intézményi tartalom és hozzáférési logika</p>
         </div>
 
-        <div class="node node--group" style="left:820px; top:240px; width:180px; height:140px;">
-          <p class="node-title">Tájékozódó útvonalak</p>
-          <p class="node-sub">Olvasóterem / tárgyszó / folyóirat / inspirációs források</p>
+        <!-- micro branching example -->
+        <div class="choice choice--accent" style="left:360px; top:940px; width:160px;">MOME katalógus</div>
+        <div class="choice choice--accent" style="left:800px; top:1120px; width:250px;">Nem találod? → könyvtárközi kölcsönzés</div>
+
+        <div class="panel-note" style="left:300px; top:1015px; width:360px;">
+          <div class="head"><span class="icon">i</span><span>Információ</span></div>
+          <div>Mit jelent a jelzet?</div>
+          <div>Mi a különbség a szabadpolcos, olvasótermi és raktári példány között?</div>
+          <div>Hol találod meg fizikailag a könyvet?</div>
         </div>
 
-        <div class="node node--group" style="left:820px; top:405px; width:180px; height:140px;">
-          <p class="node-title">Vizuális adatbázisok</p>
-          <p class="node-sub">Múzeumi és egyetemi gyűjtemények</p>
-        </div>
-
-        <div class="node node--group" style="left:820px; top:570px; width:180px; height:140px;">
-          <p class="node-title">MOME tartalomcsoportok</p>
-          <p class="node-sub">Diploma / doktori / egyetemtörténet / levéltár</p>
-        </div>
-
-        <div class="node node--result" style="left:1190px; top:90px; width:170px; height:140px;">
-          <p class="node-title">Forrástípus-kártyák</p>
-          <p class="node-sub">Több kártya egymás alatt, egy bundle-ként kezelve</p>
-        </div>
-
-        <div class="node node--result" style="left:1190px; top:240px; width:170px; height:140px;">
-          <p class="node-title">Tájékozódó végpontok</p>
-          <p class="node-sub">Kurált belépési pontok és első lépések</p>
-        </div>
-
-        <div class="node node--result" style="left:1190px; top:405px; width:170px; height:140px;">
-          <p class="node-title">Vizuális forrás-kártya</p>
-          <p class="node-sub">Ajánlott gyűjtemények és hivatkozási segítség</p>
-        </div>
-
-        <div class="node node--result" style="left:1190px; top:570px; width:170px; height:140px;">
-          <p class="node-title">MOME tartalom-kártya</p>
-          <p class="node-sub">Intézményi tartalmak és hozzáférési logika</p>
-        </div>
-
-        <div class="node" style="left:785px; top:760px; width:610px; height:220px; border-color:#9ab648; background:#edf3cf;">
-          <p class="node-title">Nyomtatott könyv – mikro-elágazás példa</p>
-          <p class="node-sub" style="margin-bottom:14px; color:#444;">Ez a box a kártyán belüli részletesebb logikát mutatja.</p>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
-            <div style="background:#fff; border:2px solid #94b117; border-radius:16px; padding:14px;">
-              <strong style="display:block; margin-bottom:10px;">→ MOME katalógus</strong>
-              <div style="background:#f6f9e8; border:1px solid #d8e1b1; border-radius:14px; padding:12px; font-size:14px; color:#555;">
-                <div style="font-weight:600; margin-bottom:8px;">(i) Információ</div>
-                <div>Mit jelent a jelzet?</div>
-                <div>Mi a különbség a szabadpolcos, olvasótermi és raktári példány között?</div>
-                <div>Hol találod meg fizikailag a könyvet?</div>
-              </div>
-            </div>
-            <div style="background:#fff; border:2px solid #94b117; border-radius:16px; padding:14px;">
-              <strong style="display:block; margin-bottom:10px;">→ Nem találod? → könyvtárközi kölcsönzés</strong>
-              <div style="font-size:14px; color:#555;">A következő kártyán jelenhet meg a MOKKA, a WorldCat és a segítségkérés logikája.</div>
-            </div>
-          </div>
+        <div class="panel-note" style="left:800px; top:1188px; width:360px;">
+          <div class="head"><span class="icon">i</span><span>Következő kártya logikája</span></div>
+          <div>Itt jelenhet meg a MOKKA, a WorldCat és a könyvtári segítségkérés további lépésként.</div>
         </div>
       </div>
     </div>
@@ -295,11 +318,11 @@
     <div class="legend">
       <div class="legend-item"><span class="legend-swatch start"></span> induló döntési pont</div>
       <div class="legend-item"><span class="legend-swatch"></span> választási doboz</div>
-      <div class="legend-item"><span class="legend-swatch group"></span> köztes csoport / elosztó</div>
+      <div class="legend-item"><span class="legend-swatch accent"></span> külön forrásgomb / fő út</div>
       <div class="legend-item"><span class="legend-swatch result"></span> eredménykártya / végpont</div>
     </div>
 
-    <p class="footnote">Ez egy statikus döntési váz. A következő lépés az lehet, hogy ennek logikája fokozatosan összeérjen az interaktív prototípussal, vagy külön, dokumentációs ábraként maradjon meg.</p>
+    <p class="footnote">Ebben a változatban a hangsúly a függőleges haladáson és a különálló, egymás mellett elhelyezett ág-gombokon van. Ez közelebb áll a küldött mintához, és jobban láthatóvá teszi az összekötéseket.</p>
   </div>
 </body>
 </html>
