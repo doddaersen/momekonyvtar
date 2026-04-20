@@ -221,19 +221,51 @@ button:disabled:hover { background: #fff; }
 }
 
 .card-column .panel { position: sticky; top: 24px; }
-.info-card-title { margin: 0 0 12px; font-size: 1.25rem; }
-.info-card-description { margin: 0 0 18px; color: var(--muted); }
 #cardView { display: grid; gap: 16px; }
 
+.info-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px;
+  background: var(--surface);
+}
+
+.info-card-title { margin: 0 0 10px; font-size: 1.25rem; }
+.info-card-description { margin: 0 0 18px; color: var(--muted); }
+
 .card-section {
-  padding: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  margin-top: 18px;
+}
+
+.card-section h3 {
+  margin-bottom: 8px;
+}
+
+.card-section ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.card-section li + li { margin-top: 8px; }
+
+.card-section.boxed {
+  padding: 16px;
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--surface-muted);
 }
 
-.card-section ul { margin: 0; padding-left: 18px; }
-.card-section li + li { margin-top: 8px; }
+.card-section.help-box {
+  padding: 16px;
+  border: 1px solid #b6c76b;
+  border-radius: 16px;
+  background: var(--accent-soft);
+}
+
 .hidden { display: none !important; }
 
 @media (max-width: 1100px) {
@@ -249,7 +281,9 @@ button:disabled:hover { background: #fff; }
 
 @media (max-width: 640px) {
   .layout { padding: 20px 16px 40px; }
-  .panel, .tree-node { padding: 18px; border-radius: 14px; }
+  .panel, .tree-node, .info-card { padding: 18px; border-radius: 14px; }
   .option-button { padding: 13px 14px; }
   .option-stack.compact-inline .option-button { padding: 8px 12px; }
+  .card-section.boxed,
+  .card-section.help-box { padding: 14px; }
 }
