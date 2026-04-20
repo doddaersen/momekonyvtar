@@ -1,76 +1,104 @@
-const nodes={
- start:{
-  question:"Mit keresel?",
-  options:[
-   {label:"Szakirodalmat",target:"lit"},
-   {label:"Vizuális forrásokat",target:"visual"},
-   {label:"MOME tartalmakat",target:"mome"}
-  ]
- },
- lit:{
-  question:"Milyen típusú szakirodalom?",
-  options:[
-   {label:"Könyvek",target:"books"},
-   {label:"Folyóiratcikkek",target:"articles"}
-  ]
- },
- books:{card:{title:"Könyvek keresése",text:"Használd a MOME könyvtár katalógusát."}},
- articles:{card:{title:"Online cikkadatbázisok",text:"Próbáld: EBSCO, JSTOR"}},
- visual:{card:{title:"Vizuális források",text:"Múzeumi digitális gyűjtemények és képarchívumok."}},
- mome:{card:{title:"MOME tartalmak",text:"Diplomamunkák, doktori művek és egyetemtörténeti anyagok."}}
-};
+let guideData = null;
+let history = [];
+let currentNodeId = null;
 
-let history=[];
+async function loadGuide() {
+  const response = await fetch('data/research-guide.json');
+  guideData = await response.json();
+  renderNode(guideData.startNode);
+}
 
-function renderNode(id){
- const node=nodes[id];
- const q=document.getElementById("questionView");
- const c=document.getElementById("cardView");
- q.innerHTML="";
- c.innerHTML="";
+function renderNode(nodeId) {
+  currentNodeId = nodeId;
+  const node = guideData.nodes[nodeId];
+  const questionView = document.getElementById('questionView');
+  const cardView = document.getElementById('cardView');
+  const title = document.getElementById('screenTitle');
+  const description = document.getElementById('screenDescription');
 
- if(node.question){
-  document.getElementById("screenTitle").innerText=node.question;
-  node.options.forEach(o=>{
-   const b=document.createElement("button");
-   b.className="option-button";
-   b.innerText=o.label;
-   b.onclick=()=>{history.push(id);renderNode(o.target)};
-   q.appendChild(b);
+  questionView.innerHTML = '';
+  cardView.innerHTML = '';
+
+  title.innerText = node.title || 'Research Guide';
+  description.innerText = node.description || '';
+
+  if (node.type === 'question') {
+    node.options.forEach(option => {
+      const button = document.createElement('button');
+      button.className = 'option-button';
+      button.type = 'button';
+      button.innerText = option.label;
+      button.onclick = () => {
+        history.push(nodeId);
+        renderNode(option.target);
+      };
+      questionView.appendChild(button);
+    });
+
+    questionView.classList.remove('hidden');
+    cardView.classList.add('hidden');
+  }
+
+  if (node.type === 'card') {
+    if (node.sections && node.sections.length) {
+      node.sections.forEach(section => {
+        const sectionWrap = document.createElement('section');
+        sectionWrap.className = 'card-section';
+
+        const heading = document.createElement('h3');
+        heading.innerText = section.heading;
+        sectionWrap.appendChild(heading);
+
+        const list = document.createElement('ul');
+        section.items.forEach(item => {
+          const li = document.createElement('li');
+          li.innerText = item;
+          list.appendChild(li);
+        });
+
+        sectionWrap.appendChild(list);
+        cardView.appendChild(sectionWrap);
+      });
+    }
+
+    questionView.classList.add('hidden');
+    cardView.classList.remove('hidden');
+  }
+
+  renderBreadcrumb();
+  updateNavigationState();
+}
+
+function renderBreadcrumb() {
+  const breadcrumb = document.getElementById('breadcrumb');
+  breadcrumb.innerHTML = '';
+
+  const trail = [...history, currentNodeId].filter(Boolean);
+  trail.forEach((nodeId, index) => {
+    const item = document.createElement('span');
+    item.className = 'breadcrumb-item';
+    item.innerText = guideData.nodes[nodeId].title || nodeId;
+    if (index === trail.length - 1) {
+      item.classList.add('current');
+    }
+    breadcrumb.appendChild(item);
   });
-  q.classList.remove("hidden");
-  c.classList.add("hidden");
- }
-
- if(node.card){
-  document.getElementById("screenTitle").innerText=node.card.title;
-  const p=document.createElement("p");
-  p.innerText=node.card.text;
-  c.appendChild(p);
-  c.classList.remove("hidden");
- }
-
- renderBreadcrumb(id);
 }
 
-function renderBreadcrumb(id){
- const bc=document.getElementById("breadcrumb");
- bc.innerHTML="";
- history.forEach(h=>{
-  const s=document.createElement("span");
-  s.innerText=nodes[h].question;
-  bc.appendChild(s);
- });
+function updateNavigationState() {
+  document.getElementById('backButton').disabled = history.length === 0;
 }
 
-document.getElementById("backButton").onclick=()=>{
- const prev=history.pop();
- if(prev)renderNode(prev);
+document.getElementById('backButton').onclick = () => {
+  const previousNode = history.pop();
+  if (previousNode) {
+    renderNode(previousNode);
+  }
 };
 
-document.getElementById("homeButton").onclick=()=>{
- history=[];
- renderNode("start");
+document.getElementById('homeButton').onclick = () => {
+  history = [];
+  renderNode(guideData.startNode);
 };
 
-renderNode("start");
+loadGuide();
