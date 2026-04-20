@@ -1,18 +1,17 @@
 let guideData = null;
-let selectedAtDepth = {};
-let openCards = {};
-let currentNodeId = null;
+let selectedPath = {};
+let multiSelections = {};
 
 async function loadGuide() {
   const response = await fetch('data/research-guide.json');
   guideData = await response.json();
-  selectedAtDepth = { 0: guideData.startNode };
-  openCards = {};
+  selectedPath = { 0: guideData.startNode };
+  multiSelections = {};
   renderGuide();
 }
 
 function getNode(nodeId) {
-  return guideData.nodes[nodeId];
+  return guideData?.nodes?.[nodeId] || null;
 }
 
 function buildVisiblePath() {
@@ -21,56 +20,58 @@ function buildVisiblePath() {
   let depth = 0;
 
   while (currentId) {
-    visible.push({ id: currentId, depth, node: getNode(currentId) });
-    const selectedId = selectedAtDepth[depth + 1];
-    if (!selectedId) break;
-    currentId = selectedId;
-    depth += 1;
+    const node = getNode(currentId);
+    if (!node) break;
+    visible.push({ id: currentId, depth, node });
+
+    if (node.type === 'single') {
+      const nextId = selectedPath[depth + 1];
+      if (!nextId) break;
+      currentId = nextId;
+      depth += 1;
+      continue;
+    }
+
+    break;
   }
 
   return visible;
 }
 
-function selectOption(targetId, depth) {
-  selectedAtDepth[depth + 1] = targetId;
-
-  Object.keys(selectedAtDepth)
+function selectSingle(targetId, depth) {
+  selectedPath[depth + 1] = targetId;
+  Object.keys(selectedPath)
     .map(Number)
     .filter(key => key > depth + 1)
-    .forEach(key => delete selectedAtDepth[key]);
+    .forEach(key => delete selectedPath[key]);
+  renderGuide();
+}
 
-  Object.keys(openCards)
-    .map(Number)
-    .filter(key => key >= depth + 1)
-    .forEach(key => delete openCards[key]);
-
-  const targetNode = getNode(targetId);
-  if (targetNode && targetNode.type === 'card') {
-    openCards[depth + 1] = targetId;
-  }
-
+function toggleMulti(parentId, targetId) {
+  if (!multiSelections[parentId]) multiSelections[parentId] = [];
+  const current = new Set(multiSelections[parentId]);
+  if (current.has(targetId)) current.delete(targetId);
+  else current.add(targetId);
+  multiSelections[parentId] = Array.from(current);
   renderGuide();
 }
 
 function goHome() {
-  selectedAtDepth = { 0: guideData.startNode };
-  openCards = {};
+  selectedPath = { 0: guideData.startNode };
+  multiSelections = {};
   renderGuide();
 }
 
 function goBack() {
-  const levels = Object.keys(selectedAtDepth).map(Number).sort((a, b) => a - b);
+  const levels = Object.keys(selectedPath).map(Number).sort((a, b) => a - b);
   if (levels.length <= 1) return;
-  const last = levels[levels.length - 1];
-  delete selectedAtDepth[last];
-  delete openCards[last];
+  delete selectedPath[levels[levels.length - 1]];
   renderGuide();
 }
 
 function renderBreadcrumb(visiblePath) {
   const breadcrumb = document.getElementById('breadcrumb');
   breadcrumb.innerHTML = '';
-
   visiblePath.forEach((entry, index) => {
     const item = document.createElement('span');
     item.className = 'breadcrumb-item';
@@ -80,11 +81,11 @@ function renderBreadcrumb(visiblePath) {
   });
 }
 
-function createOptionsBlock(entry, depth) {
+function createNodeBlock(entry) {
   const nodeWrap = document.createElement('section');
   nodeWrap.className = 'tree-node';
 
-  const title = document.createElement('h2');
+  const title = document.createElement('div');
   title.className = 'tree-title';
   title.innerText = entry.node.title || entry.id;
   nodeWrap.appendChild(title);
@@ -96,55 +97,97 @@ function createOptionsBlock(entry, depth) {
     nodeWrap.appendChild(desc);
   }
 
-  if (entry.node.type === 'question' && entry.node.options) {
-    const optionList = document.createElement('div');
-    optionList.className = 'option-stack';
+  const trail = document.createElement('div');
+  trail.className = 'trail-line';
+  trail.innerHTML = '<span class="trail-segment"></span><span class="trail-arrow">→</span>';
+  nodeWrap.appendChild(trail);
 
-    entry.node.options.forEach(option => {
-      const targetNode = getNode(option.target);
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'option-button';
-      button.innerHTML = `<span>${option.label}</span><span class="option-meta">${targetNode?.type === 'card' ? 'info' : 'lépés'}</span>`;
+  const optionList = document.createElement('div');
+  optionList.className = 'option-stack';
 
-      const activeId = selectedAtDepth[depth + 1];
-      if (activeId === option.target) button.classList.add('is-selected');
-      else if (activeId) button.classList.add('is-faded');
+  const nextActiveId = selectedPath[entry.depth + 1];
+  const selectedSet = new Set(multiSelections[entry.id] || []);
 
-      button.onclick = () => selectOption(option.target, depth);
-      optionList.appendChild(button);
-    });
+  (entry.node.options || []).forEach(option => {
+    const targetNode = getNode(option.target);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'option-button';
 
-    nodeWrap.appendChild(optionList);
-  }
+    const isMulti = entry.node.type === 'multi';
+    const isSelected = isMulti ? selectedSet.has(option.target) : nextActiveId === option.target;
+    const hasAnySingleSelected = entry.node.type === 'single' && !!nextActiveId;
 
+    if (isSelected) button.classList.add('is-selected');
+    else if (hasAnySingleSelected) button.classList.add('is-faded');
+
+    button.innerHTML = `<span class="option-label">${option.label}</span><span class="option-meta">${targetNode?.type === 'card' ? 'info' : entry.node.type}</span>`;
+
+    button.onclick = () => {
+      if (entry.node.type === 'single') selectSingle(option.target, entry.depth);
+      if (entry.node.type === 'multi') toggleMulti(entry.id, option.target);
+    };
+
+    optionList.appendChild(button);
+  });
+
+  nodeWrap.appendChild(optionList);
   return nodeWrap;
 }
 
-function renderCard(cardId) {
-  const node = getNode(cardId);
+function gatherCards(visiblePath) {
+  const cards = [];
+
+  visiblePath.forEach((entry, index) => {
+    const node = entry.node;
+    if (node.type === 'card') cards.push(entry.id);
+
+    if (node.type === 'single') {
+      const nextId = selectedPath[index + 1];
+      const nextNode = getNode(nextId);
+      if (nextNode && nextNode.type === 'card') cards.push(nextId);
+    }
+
+    if (node.type === 'multi') {
+      (multiSelections[entry.id] || []).forEach(targetId => {
+        const targetNode = getNode(targetId);
+        if (targetNode && targetNode.type === 'card') cards.push(targetId);
+      });
+    }
+  });
+
+  return [...new Set(cards)];
+}
+
+function renderCards(cardIds) {
   const cardView = document.getElementById('cardView');
   cardView.innerHTML = '';
 
-  if (!node) return;
-
-  const card = document.createElement('article');
-  card.className = 'info-card';
-
-  const title = document.createElement('h2');
-  title.className = 'info-card-title';
-  title.innerText = node.title || cardId;
-  card.appendChild(title);
-
-  if (node.description) {
-    const description = document.createElement('p');
-    description.className = 'info-card-description';
-    description.innerText = node.description;
-    card.appendChild(description);
+  if (!cardIds.length) {
+    cardView.classList.add('hidden');
+    return;
   }
 
-  if (node.sections && node.sections.length) {
-    node.sections.forEach(section => {
+  cardIds.forEach(cardId => {
+    const node = getNode(cardId);
+    if (!node) return;
+
+    const card = document.createElement('article');
+    card.className = 'info-card';
+
+    const title = document.createElement('h2');
+    title.className = 'info-card-title';
+    title.innerText = node.title || cardId;
+    card.appendChild(title);
+
+    if (node.description) {
+      const description = document.createElement('p');
+      description.className = 'info-card-description';
+      description.innerText = node.description;
+      card.appendChild(description);
+    }
+
+    (node.sections || []).forEach(section => {
       const sectionWrap = document.createElement('section');
       sectionWrap.className = 'card-section';
 
@@ -153,7 +196,7 @@ function renderCard(cardId) {
       sectionWrap.appendChild(heading);
 
       const list = document.createElement('ul');
-      section.items.forEach(item => {
+      (section.items || []).forEach(item => {
         const li = document.createElement('li');
         li.innerText = item;
         list.appendChild(li);
@@ -162,9 +205,10 @@ function renderCard(cardId) {
       sectionWrap.appendChild(list);
       card.appendChild(sectionWrap);
     });
-  }
 
-  cardView.appendChild(card);
+    cardView.appendChild(card);
+  });
+
   cardView.classList.remove('hidden');
 }
 
@@ -173,35 +217,21 @@ function renderGuide() {
   const heroTitle = document.getElementById('screenTitle');
   const heroDescription = document.getElementById('screenDescription');
   const visiblePath = buildVisiblePath();
-  const deepest = visiblePath[visiblePath.length - 1];
+  const current = visiblePath[visiblePath.length - 1];
 
-  currentNodeId = deepest.id;
-
-  heroTitle.innerText = 'MOME Research Guide';
-  heroDescription.innerText = 'Az ágak lefelé nyílnak meg, a kiválasztott információs kártya jobbra jelenik meg.';
+  heroTitle.innerText = current?.node?.title || 'MOME Research Guide';
+  heroDescription.innerText = current?.node?.description || 'A guide kérdésekkel és rövid útmutatókkal segít megtalálni a megfelelő forrásokat.';
 
   treeView.innerHTML = '';
-
-  visiblePath.forEach((entry, depth) => {
-    if (entry.node.type === 'question') {
-      treeView.appendChild(createOptionsBlock(entry, depth));
+  visiblePath.forEach(entry => {
+    if (entry.node.type === 'single' || entry.node.type === 'multi') {
+      treeView.appendChild(createNodeBlock(entry));
     }
   });
 
   renderBreadcrumb(visiblePath);
+  renderCards(gatherCards(visiblePath));
   document.getElementById('backButton').disabled = visiblePath.length <= 1;
-
-  const openCardDepths = Object.keys(openCards).map(Number).sort((a, b) => a - b);
-  if (openCardDepths.length) {
-    const lastCardDepth = openCardDepths[openCardDepths.length - 1];
-    renderCard(openCards[lastCardDepth]);
-  } else if (deepest?.node.type === 'card') {
-    renderCard(deepest.id);
-  } else {
-    const cardView = document.getElementById('cardView');
-    cardView.innerHTML = '';
-    cardView.classList.add('hidden');
-  }
 }
 
 document.getElementById('backButton').onclick = goBack;
