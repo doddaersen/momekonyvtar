@@ -44,9 +44,8 @@
             {
               "label": "Nem találod?",
               "children": [
-                "Könyvtárközi kölcsönzés",
-                "Segítség kérése a könyvtártól",
-                "Keresés közös keresőkben: MOKKA, WorldCat"
+                "Megnézem a MOKKA vagy WorldCat keresőkben",
+                "Tovább a könyvtárközi kölcsönzéshez"
               ]
             }
           ]
