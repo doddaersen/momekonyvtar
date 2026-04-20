@@ -42,11 +42,7 @@
               ]
             },
             {
-              "label": "Nem találod?",
-              "children": [
-                "Megnézem a MOKKA vagy WorldCat keresőkben",
-                "Tovább a könyvtárközi kölcsönzéshez"
-              ]
+              "label": "Nem találod? → könyvtárközi kölcsönzés"
             }
           ]
         },
@@ -54,9 +50,7 @@
           "heading": "További ajánlott források",
           "variant": "boxed",
           "items": [
-            "MOME katalógus",
-            "MOKKA",
-            "WorldCat"
+            "MOME katalógus"
           ]
         }
       ]
