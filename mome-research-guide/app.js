@@ -166,8 +166,14 @@ function appendSectionItem(list, item, isRouteSection = false) {
   const li = document.createElement('li');
   if (isRouteSection) li.classList.add('route-item');
 
+  const addText = (target, text) => {
+    const span = document.createElement('span');
+    span.innerText = text;
+    target.appendChild(span);
+  };
+
   if (typeof item === 'string') {
-    li.innerText = item;
+    addText(li, item);
   } else if (item && typeof item === 'object') {
     if (item.url) {
       const a = document.createElement('a');
@@ -177,7 +183,32 @@ function appendSectionItem(list, item, isRouteSection = false) {
       a.innerText = item.label || item.url;
       li.appendChild(a);
     } else {
-      li.innerText = item.label || '';
+      addText(li, item.label || '');
+    }
+
+    if (Array.isArray(item.children) && item.children.length) {
+      const childList = document.createElement('ul');
+      childList.className = 'route-children';
+      item.children.forEach(child => {
+        const childLi = document.createElement('li');
+        childLi.className = 'route-child-item';
+        if (typeof child === 'string') {
+          childLi.innerText = child;
+        } else if (child && typeof child === 'object') {
+          if (child.url) {
+            const a = document.createElement('a');
+            a.href = child.url;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.innerText = child.label || child.url;
+            childLi.appendChild(a);
+          } else {
+            childLi.innerText = child.label || '';
+          }
+        }
+        childList.appendChild(childLi);
+      });
+      li.appendChild(childList);
     }
   }
 
