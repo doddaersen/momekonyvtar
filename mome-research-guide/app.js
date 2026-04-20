@@ -102,11 +102,6 @@ function createNodeBlock(entry) {
   trail.innerHTML = '<span class="trail-segment"></span><span class="trail-arrow">→</span>';
   nodeWrap.appendChild(trail);
 
-  const pacmanRow = document.createElement('div');
-  pacmanRow.className = 'pacman-row';
-  pacmanRow.innerHTML = '<span class="pacman" aria-hidden="true"></span><span class="pacman-dots" aria-hidden="true"></span>';
-  nodeWrap.appendChild(pacmanRow);
-
   const optionList = document.createElement('div');
   optionList.className = 'option-stack';
   if (entry.node.layout === 'compact-inline') {
