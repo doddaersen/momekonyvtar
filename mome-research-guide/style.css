@@ -261,9 +261,9 @@ button:disabled:hover { background: #fff; }
 
 .card-section.route-box {
   padding: 14px 16px;
-  border: 1px dashed #adc052;
+  border: 2px solid #94b117;
   border-radius: 16px;
-  background: linear-gradient(180deg, rgba(194, 215, 76, 0.12) 0%, rgba(237, 243, 207, 0.42) 100%);
+  background: linear-gradient(180deg, rgba(194, 215, 76, 0.18) 0%, rgba(194, 215, 76, 0.08) 100%);
 }
 
 .route-list,
@@ -274,28 +274,66 @@ button:disabled:hover { background: #fff; }
 
 .route-item {
   position: relative;
-  padding-left: 22px;
+  padding-left: 0;
 }
 
-.route-item::before {
-  content: "→";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #7d9530;
-  font-weight: 700;
+.route-item + .route-item {
+  margin-top: 14px;
 }
 
 .route-item > span,
 .route-item > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: #111;
+  background: #cfe164;
+  border: 1px solid #94b117;
+  border-radius: 999px;
+  padding: 8px 12px;
+  text-decoration: none;
+}
+
+.route-item > span::before,
+.route-item > a::before {
+  content: "→";
+  font-weight: 700;
+  color: #577000;
+}
+
+.route-helper-box {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border: 1px solid #d8e1b1;
+  border-radius: 14px;
+  background: rgba(237, 243, 207, 0.72);
+}
+
+.route-helper-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
   font-weight: 600;
+  color: var(--muted);
+}
+
+.route-helper-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #a8b67a;
+  font-size: 0.75rem;
+  line-height: 1;
 }
 
 .route-children {
-  margin-top: 10px;
-  margin-left: 8px;
-  padding-left: 16px;
-  border-left: 2px solid #c5d887;
+  margin-top: 0;
 }
 
 .route-child-item {
@@ -305,7 +343,7 @@ button:disabled:hover { background: #fff; }
 }
 
 .route-child-item::before {
-  content: "↳";
+  content: "•";
   position: absolute;
   left: 0;
   top: 0;
@@ -350,5 +388,6 @@ button:disabled:hover { background: #fff; }
   .option-stack.compact-inline .option-button { padding: 8px 12px; }
   .card-section.boxed,
   .card-section.help-box,
-  .card-section.route-box { padding: 14px; }
+  .card-section.route-box,
+  .route-helper-box { padding: 14px; }
 }
